@@ -23,10 +23,8 @@ struct Cura{
     }
 };
 
-enum Tipo{Borboleta, Unicornio, Baleia};
 
 struct Tamagochi{
-    Tipo tipo;
     int idade;
     string nome;
     int fome;
@@ -35,9 +33,8 @@ struct Tamagochi{
     int vida;
     int saude;
 
-    Tamagochi(string nome, Tipo tipo){
+    Tamagochi(string nome){
         this->nome = nome;
-        this->tipo = tipo;
         idade = 0;
         fome = 0;
         vivo = true;
@@ -122,7 +119,7 @@ int main(){
     Cura cura2("Vacina", 7);
 
     srand(time(NULL));
-    Tamagochi t1 = Tamagochi("Lero Lero", Borboleta);
+    Tamagochi t1 = Tamagochi("Josenildo");
 
     t1.show();
     sleep(1);
