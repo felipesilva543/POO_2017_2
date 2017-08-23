@@ -119,7 +119,7 @@ int main(){
     Cura cura2("Vacina", 7);
 
     srand(time(NULL));
-    Tamagochi t1 = Tamagochi("Josenildo");
+    Tamagochi t1 = Tamagochi("Axuaxua");
 
     t1.show();
     sleep(1);
