@@ -6,8 +6,8 @@ struct Comida{
     string nome;
     int vnut;
     Comida(string _nome, int _vnut){
-        nome = _nome;
-        vnut = _vnut;
+        this->nome = _nome;
+        this->vnut = _vnut;
     }
 };
 
