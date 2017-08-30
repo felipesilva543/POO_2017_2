@@ -2,14 +2,44 @@
 #include <vector>
 using namespace std;
 
-class Cliente{
+
+class Espiral{
   private:
-    float saldo;
+    string nome;
+    int qtd;
+    float valor;
   public:
-    Cliente(float _saldo = 0){
-        saldo = _saldo;
+    Espiral(string _nome = "", int _qtd = 0, float _valor = 0){
+        this->nome = _nome;
+        this->qtd = _qtd;
+        this->valor = _valor;
     }
 
+    void setNome(string _nome){
+        this->nome = _nome;
+    }
+    void setQtd(int _qtd){
+        this->qtd = _qtd;
+    }
+    void setValor(float _valor){
+        this->valor = _valor;
+    }
+
+
+};
+
+class JunkFood{
+  private:
+    vector<Espiral> espirais;
+    float saldo{0};
+    float lucro{0};
+    int qtdEs{0};
+  public:
+    JunkFood(int _qtd){
+        espirais(_qtd);
+        this->qtdEs = _qtd;
+    }
+    /*///////////////////////////////////*/
     bool inserirDin(float _valor){
         if (_valor > 0){
             this->saldo += _valor;
@@ -17,64 +47,44 @@ class Cliente{
         }
         return false;
     }
-
+    /*///////////////////////////////////*/
     float getSaldo(){
         return this->saldo;
     }
-
+    /*///////////////////////////////////*/
     float getTroco(){
         float x = this->saldo;
         this->saldo = 0;
         return x;
     }
-};
+    /*///////////////////////////////////*/
+    bool alterarProd(int _id, string _nome, int _atd, float _valor){
+        espirais.at(_id)
 
-class Produto{
-  private:
-   // int id;
-    string nome;
-    int qnt;
-    float valor;
-  public:
-    Produto(string _nome = "", int _qtd = 0, float _valor = 0){
-        this->id = _id;
-        this->nome = _nome;
-        this->qnt = _qtd;
-        this->valor = _valor;
     }
+    /*////////////////////////////////////
+    void comprar(int _id){
 
-};
-
-class JunkFood{
-  private:
-    int espirais;
-    vector<Produto> produtos;
-  public:
-    JunkFood(int _espirais = 0){
-        this->espirais = _espirais;
-        produtos.resize(espirais);
     }
-
-    void alterarProd(){
+    ////////////////////////////////////
+    void statusMaq(){
 
     }
 
+    */
+
 };
-
-
 
 int main()
 {
-    Cliente cliente;
+    JunkFood maquina;
 
-    cout << "Ola Cliente!" << endl
-         << "Comandos:" << endl
+    cout << "Comandos:" << endl
          << "inserirDin _valor" << endl
          << "saldo" << endl
          << "troco" << endl
-         << "fim" << endl << endl
 
-         << "Ola Admin!" << endl
+
          << "Comandos:" << endl
          << "iniciar _qtd" << endl
 
@@ -88,17 +98,17 @@ int main()
         if(op == "inserirDin"){
             float x;
             cin >> x;
-            if(cliente.inserirDin(x)){
+            if(maquina.inserirDin(x)){
                 cout << "Suceso!"<< endl;
             }else{
                 cout << "Erro!" << endl;
             }
         }
         if (op == "saldo"){
-           cout << cliente.getSaldo() << " Reais." << endl;
+           cout << maquina.getSaldo() << " Reais." << endl;
         }
         if (op == "troco"){
-            cout << "Você retirou " << cliente.getTroco() << " Reais." << endl;
+            cout << "Você retirou " << maquina.getTroco() << " Reais." << endl;
         }
     }
 
