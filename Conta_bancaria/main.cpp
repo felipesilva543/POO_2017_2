@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <sstream>
+
 using namespace std;
 
 
@@ -56,10 +58,22 @@ public:
         this->extrato.push_back(Operacao("Deposito: +", valor));
         return true;
     }
-    vector<Operacao> getExtrato(){
-        return this->extrato;
+    string getExtrato(){
+        stringstream ss;
+        for (Operacao o : extrato){
+            ss << o.descricao << " " << o.valor << endl;
+        }
+        return ss.str();
     }
 
+    string getExtratoN(int n){
+        stringstream ss;
+        int tam = (extrato.size()) - n;
+        for(; tam < (int)extrato.size(); tam++){
+            ss << extrato[tam].descricao << " " << extrato[tam].valor << endl;
+        }
+        return ss.str();
+    }
 };
 
 int main(){
@@ -72,15 +86,19 @@ int main(){
         cin >> op;
 
         if(op == "help"){
-            cout << "iniciar _id" << endl
+            stringstream menu;
+            menu << "iniciar _id" << endl
                  << "saldo" << endl
                  << "saque _valor" << endl
                  << "deposito _valor" << endl
                  << "extrato" << endl
                  << "fim" << endl;
+
+            cout << menu.str();
         }
 
-        if(op == "iniciar"){
+        else if(op == "iniciar"){
+
             conta = Conta(read<int>());
 
             conta.deposito(400);
@@ -95,26 +113,22 @@ int main(){
 
             cout << "ok" << endl;
         }
-        if(op == "saldo"){
+        else if(op == "saldo"){
             cout << conta.getSaldo() << endl;
         }
-        if(op == "deposito"){
+        else if(op == "deposito"){
             cout << (conta.deposito(read<float>())? "ok" : "erro") << endl;
         }
-        if(op == "saque"){
+        else if(op == "saque"){
             cout << (conta.saque(read<float>())? "ok" : "erro") << endl;
         }
-        if(op == "extrato"){
-            for(auto operacao : conta.getExtrato()){
-                cout << operacao.descricao << operacao.valor << endl;
-            }
+        else if(op == "extrato"){
+            cout << conta.getExtrato();
             cout << "Saldo Atual: " << conta.getSaldo() << endl;
         }
-        if(op == "extratoN"){
-
+        else if(op == "extratoN"){
+            cout << conta.getExtratoN(read<int>());
+            cout << "Saldo Atual: " << conta.getSaldo() << endl;
         }
     }
 }
-
-
-
