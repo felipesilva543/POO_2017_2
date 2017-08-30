@@ -76,6 +76,18 @@ public:
     }
 };
 
+void inicializar(Conta& conta){
+    conta.deposito(400);
+    conta.deposito(300);
+    conta.deposito(200);
+    conta.deposito(100);
+    conta.saque(40);
+    conta.saque(30);
+    conta.saque(20);
+    conta.deposito(100);
+    conta.saque(300);
+}
+
 int main(){
 
     Conta conta;
@@ -100,17 +112,7 @@ int main(){
         else if(op == "iniciar"){
 
             conta = Conta(read<int>());
-
-            conta.deposito(400);
-            conta.deposito(300);
-            conta.deposito(200);
-            conta.deposito(100);
-            conta.saque(40);
-            conta.saque(30);
-            conta.saque(20);
-            conta.deposito(100);
-            conta.saque(300);
-
+            inicializar(conta);
             cout << "ok" << endl;
         }
         else if(op == "saldo"){
