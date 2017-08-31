@@ -30,20 +30,23 @@ public:
     Conta(int id = 0){
         this->id = id;
     }
+
     float getSaldo(){
         return this->saldo;
     }
+
     int getId(){
         return this->id;
     }
+
     void setId(int id){
         this->id = id;
     }
 
     bool saque(float valor){
-        if((this->saldo < valor) || (valor < 0))
+        if((this->saldo < valor) || (valor < 0)){
             return false;
-
+        }
         this->saldo -= valor;
         this->extrato.push_back(Operacao("Saque: -", valor));
 
@@ -51,8 +54,9 @@ public:
     }
 
     bool deposito(float valor){
-        if(valor < 1)
+        if(valor < 1){
             return false;
+        }
 
         this->saldo += valor;
         this->extrato.push_back(Operacao("Deposito: +", valor));
