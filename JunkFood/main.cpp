@@ -1,10 +1,7 @@
 #include <iostream>
 #include <vector>
-<<<<<<< HEAD
-
-=======
 #include <sstream>
->>>>>>> 3a16d8659bebb2085b789f54a29f7b6afacce725
+
 using namespace std;
 
 template <class T>
