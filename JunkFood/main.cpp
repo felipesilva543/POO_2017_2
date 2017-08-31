@@ -128,9 +128,7 @@ void inicializar(JunkFood& maquina){
 }
 
 
-int main()
-{
-    JunkFood maquina;
+int intUsuario(JunkFood& maquina){
     string op;
 
     while (op != "fim") {
@@ -202,4 +200,8 @@ int main()
 
 
     return 0;
+}
+int main(){
+    JunkFood maquina;
+    intUsuario(maquina);
 }
