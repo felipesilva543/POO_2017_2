@@ -51,17 +51,17 @@ public:
     }
 
     bool deposito(float valor){
-        if(valor < 1)
+        if(valor < 1){
             return false;
-
+        }
         this->saldo += valor;
         this->extrato.push_back(Operacao("Deposito: +", valor));
         return true;
     }
     string getExtrato(){
         stringstream ss;
-        for (Operacao o : extrato){
-            ss << o.descricao << " " << o.valor << endl;
+        for (Operacao vetor : extrato){
+            ss << vetor.descricao << " " << vetor.valor << endl;
         }
         return ss.str();
     }
@@ -104,6 +104,7 @@ int main(){
                  << "saque _valor" << endl
                  << "deposito _valor" << endl
                  << "extrato" << endl
+                 << "extratoN _n" << endl
                  << "fim" << endl;
 
             cout << menu.str();
