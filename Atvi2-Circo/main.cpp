@@ -1,5 +1,3 @@
-//Criação da class que verifica a quantidade de alegria da plateia e o quanto determinado Circence agradou
-
 #include <iostream>
 #include <vector>
 
@@ -31,24 +29,6 @@ public:
         this->alegria = 0;
         this->preferencias = preferencias;
     }
-
-//    void verEspetaculo(vector<Circense> vetor){
-//        for (Circense& circense : vetor)
-//            for(string pref : preferencias)
-//                if(circense.especialidade == pref ){
-//                    this->alegria += 1;
-//                }
-
-        // MODO INDEXADO
-//        for (int i = 0; i < vetor.size(); i++){
-//            for(int j = 0; j < preferencias.size(); j++){
-//                if(vetor[i].especialidade == preferencias[j]){
-//                    this->alegria += 1;
-//                    vetor[j].gosto +=1;
-//                }
-//            }
-//        }
-//    }
 
     void addPreferencias(string pref){
         preferencias.push_back(pref);
@@ -90,20 +70,7 @@ int main(){
                                  Circense("Juvenal", "domador"),
                                  Circense("Valentina", "contorcionista")};
 
-//        for(Pessoa &pessoa : plateia)
-//            pessoa.verEspetaculo(atracoes);
-
-//        for(Pessoa &pessoa : plateia)
-//            cout << pessoa.nome << " " << pessoa.alegria << "\n";
-
-//        cout << endl;
-
-//        for(Circense &cir : atracoes)
-//            cout << cir.nome << endl
-//                 << cir.especialidade << endl
-//                 << cir.gosto << endl;
-
-           Circo *circo = new Circo(atracoes, plateia);
+          Circo *circo = new Circo(atracoes, plateia);
 
            circo->espetaculo();
 
