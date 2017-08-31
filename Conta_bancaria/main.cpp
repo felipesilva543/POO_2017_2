@@ -57,10 +57,6 @@ public:
         if(valor < 1){
             return false;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 3a16d8659bebb2085b789f54a29f7b6afacce725
         this->saldo += valor;
         this->extrato.push_back(Operacao("Deposito: +", valor));
         return true;
