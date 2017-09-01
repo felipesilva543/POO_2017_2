@@ -88,18 +88,22 @@ class JunkFood{
 
     }
     /*///////////////////////////////////*/
-    int comprar(int _id){
+    string comprar(int _id){
+        stringstream ss;
+
         if((_id > (int) espirais.size()) || (espirais[_id].getQtd() <= 0)){
-            return -1;
+            ss << "-1";
+            return ss.str();
         }
         if((this->saldo) < (espirais[_id].getValor())){
-            return -2;
+            ss << "-2";
+            return ss.str();
         }
         this->saldo -= espirais[_id].getValor();
         this->lucro += espirais[_id].getValor();
         espirais[_id].setQtd((espirais[_id].getQtd() - 1));
-
-        return 1;
+        ss << espirais[_id].nome;
+        return ss.str();
 
     }
     /*//////////////////////////////////*/
@@ -175,12 +179,14 @@ int intUsuario(JunkFood& maquina){
 
         if(op == "comprar"){
             int x = read<int>();
-            if((maquina.comprar(x)) == 1){
-                cout << "Comprado!" << endl;
-            }else if((maquina.comprar(x)) == -1){
+            string retorno = "";
+            retorno = maquina.comprar(x);
+            if(retorno == "-1"){
                 cout << "ERRO: Produto não existe!" << endl;
-            }else if((maquina.comprar(x)) == -2){
+            }else if(retorno == "-2"){
                 cout << "ERRO: Saldo Insuficiente!" << endl;
+            }else{
+                cout << "Você comprou um " << retorno << endl;
             }
         }
 
