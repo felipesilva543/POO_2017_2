@@ -51,10 +51,13 @@ class JunkFood{
     vector<Espiral> espirais;
     float saldo{0.0};
     float lucro{0.0};
+    int qtdProd{0};
 
-    JunkFood(int _qtd = 0):
+    JunkFood(int _qtd = 0, int _qtdProd = 0):
         espirais(_qtd)
-    {}
+    {
+        this->qtdProd = _qtdProd;
+    }
 
     /*///////////////////////////////////*/
     bool inserirDin(float _valor){
@@ -78,7 +81,7 @@ class JunkFood{
     }
     /*///////////////////////////////////*/
     bool alterarProd(int _id, string _nome, int _qtd, float _valor){
-        if((_id < (int) espirais.size()) && (_nome != "") && (_qtd > 0) && (_valor > 0.0)){
+        if((_id < (int) espirais.size()) && (_nome != "") && (_qtd > 0) && (_valor > 0.0) && (_qtd <= this->qtdProd)){
             espirais[_id].setNome(_nome);
             espirais[_id].setQtd(_qtd);
             espirais[_id].setValor(_valor);
@@ -111,7 +114,8 @@ class JunkFood{
 
         stringstream ss;
         ss << "Saldo: " << this->saldo << endl
-           << "Lucro: " << this->lucro << endl;
+           << "Lucro: " << this->lucro << endl
+           << "Quantidade max. por espiral: " << this->qtdProd << endl;
         int aux = 0;
         for(auto sel : espirais){
             ss << "ind: " << aux << " "
@@ -143,7 +147,7 @@ int intUsuario(JunkFood& maquina){
 
         if(op == "help"){
             cout << "\nComandos:" << endl
-                 << "iniciar $qtd" << endl
+                 << "iniciar $qtd $qtdProd" << endl
                  << "inserirDin $valor" << endl
                  << "saldo" << endl
                  << "troco" << endl
@@ -154,7 +158,10 @@ int intUsuario(JunkFood& maquina){
         }
 
         if(op == "iniciar"){
-            maquina = JunkFood(read<int>());
+            int qtd, qtdProd;
+            qtd = read<int>();
+            qtdProd = read<int>();
+            maquina = JunkFood(qtd, qtdProd);
             inicializar(maquina);
             cout << "Maquina criada!" << endl;
         }
