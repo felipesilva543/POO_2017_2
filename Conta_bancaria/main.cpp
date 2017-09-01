@@ -71,7 +71,7 @@ public:
 
     string getExtratoN(int n){
         stringstream ss;
-        int tam = (extrato.size()) - n;
+        int tam = (int)(extrato.size()) - n;
         for(; tam < (int)extrato.size(); tam++){
             ss << extrato[tam].descricao << " " << extrato[tam].valor << endl;
         }

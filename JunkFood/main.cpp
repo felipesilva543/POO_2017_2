@@ -80,14 +80,17 @@ class JunkFood{
         return x;
     }
     /*///////////////////////////////////*/
-    bool alterarProd(int _id, string _nome, int _qtd, float _valor){
-        if((_id < (int) espirais.size()) && (_nome != "") && (_qtd > 0) && (_valor > 0.0) && (_qtd <= this->qtdProd)){
+    int alterarProd(int _id, string _nome, int _qtd, float _valor){
+        if(((_id > (int)espirais.size() -1)) || (_nome == "") || (_qtd <= 0) || (_valor <= 0)){
+            return -1;
+        }else if(_qtd > this->qtdProd){
+            return -2;
+        }else{
             espirais[_id].setNome(_nome);
             espirais[_id].setQtd(_qtd);
             espirais[_id].setValor(_valor);
-            return true;
+            return 1;
         }
-        return false;
 
     }
     /*///////////////////////////////////*/
@@ -202,8 +205,15 @@ int intUsuario(JunkFood& maquina){
             string nome = read<string>();
             int qtd = read<int>();
             float valor = read<float>();
+            int res = maquina.alterarProd(id, nome, qtd, valor);
+            if (res == 1){
+                cout << "Produto Inserido!" << endl;
+            }else if(res == -2){
+                cout << "ERRO: Quantidade maxima de produto excedida!" << endl;
+            }else if(res == -1){
+                cout << "ERRO: Informações de produto invalida!" << endl;
+            }
 
-            cout << (maquina.alterarProd(id, nome, qtd, valor)? "Produto Alterado!\n" : "Erro ao alterar produto!\n");
         }
 
         if(op == "statusMaq"){
