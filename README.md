@@ -2,12 +2,12 @@
 
 Arquivos da disciplina de Programação Orientada a Objetos
 
+Desenvolvedores:
 Francisco Felipe da Silva*
-
 Iago Oliveira Lima*
 
 
-*Universidade Federal do Ceara - Campus Quixadá
+*Estudantes da Universidade Federal do Ceara - Campus Quixadá
 
 #Diário de Trabalho
 
