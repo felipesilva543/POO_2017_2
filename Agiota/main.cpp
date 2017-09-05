@@ -50,6 +50,7 @@ class Sistema{
     bool rmTran(int _id){
         for(int i = 0; i < (int) transacoes.size(); i++){
             if(transacoes[i].id == _id){
+                balanco -= transacoes[i].valor;
                 transacoes.erase(transacoes.begin() + i);
                 return true;
             }
@@ -84,7 +85,7 @@ class Sistema{
 
     int contarClientes(){
         vector<string> aux;
-        int i = -1;
+       int i = -1;
         int x = 0;
 
         for(Transacao elemento : transacoes){
@@ -92,12 +93,14 @@ class Sistema{
                 aux.push_back(elemento.nome);
                 cout << aux.size() << endl;
             }
+            x = 0;
             for(i = 0; i < (int) aux.size(); i++){
                 if(elemento.nome == aux[i]){
                     x += 1;
                 }
             }
-            if(x != 0){
+
+            if(x == 0){
                 aux.push_back(elemento.nome);
             }
         }
