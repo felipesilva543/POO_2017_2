@@ -11,7 +11,7 @@ Iago Oliveira Lima*
 
 *Estudantes da Universidade Federal do Ceara - Campus Quixadá
 
-#Diário de Trabalho
+# Diário de Trabalho
 
 1. Tamagochi
 2. Circo
