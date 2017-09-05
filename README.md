@@ -4,9 +4,9 @@ Arquivos da disciplina de Programação Orientada a Objetos
 
 Desenvolvedores:
 
-Francisco Felipe da Silva*
+ Francisco Felipe da Silva*
 
-Iago Oliveira Lima*
+ Iago Oliveira Lima*
 
 
 *Estudantes da Universidade Federal do Ceara - Campus Quixadá
