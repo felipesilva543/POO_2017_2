@@ -91,7 +91,6 @@ class Sistema{
         for(Transacao elemento : transacoes){
             if(i == -1){
                 aux.push_back(elemento.nome);
-                cout << aux.size() << endl;
             }
             x = 0;
             for(i = 0; i < (int) aux.size(); i++){
