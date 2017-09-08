@@ -88,7 +88,7 @@ class Sistema{
        int i = -1;
         int x = 0;
 
-        for(Transacao elemento : transacoes){
+        
             if(i == -1){
                 aux.push_back(elemento.nome);
                 cout << aux.size() << endl;
