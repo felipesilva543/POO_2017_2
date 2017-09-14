@@ -3,12 +3,12 @@
 // Ajeitar as Operações
 //    >> saldo $conta - OK
 //    >> saque $conta $valor - OK
-//    >> deposito $conta $valor - Tá dando erro
-//    >> extrato $conta
-//    >> extratoN $conta $qtd
+//    >> deposito $conta $valor - OK
+//    >> extrato $conta - OK
+//    >> extratoN $conta $qtd - OK
 
-// Ordenar vetor de clientes por ordem
-// Mudar Status das contas quando encerrar (lembrar que se n fizer, nao colocar o status no "show")
+// Ordenar vetor de clientes
+// Mudar Status das contas quando encerrar - OK
 
 
 
@@ -16,6 +16,8 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <algorithm>
+
 using namespace std;
 
 int controle = 0;
@@ -68,19 +70,10 @@ public:
         return true;
     }
 
-    bool depositar(float valor){
-        if(valor < 1){
-            return false;
-        }
-        this->saldo += valor;
-        this->extrato.push_back(Operacao("Deposito: +", valor));
-        return true;
-    }
-
     string getExtrato(){
         stringstream ss;
         for (Operacao vetor : extrato){
-            ss << vetor.descricao << " " << vetor.valor << endl;
+            ss << vetor.descricao << vetor.valor << endl;
         }
         return ss.str();
     }
@@ -89,7 +82,7 @@ public:
         stringstream ss;
         int tam = (int)(extrato.size()) - n;
         for(; tam < (int)extrato.size(); tam++){
-            ss << extrato[tam].descricao << " " << extrato[tam].valor << endl;
+            ss << extrato[tam].descricao << extrato[tam].valor << endl;
         }
         return ss.str();
     }
@@ -130,7 +123,7 @@ class Cliente{
     }
 
     int endConta(int _numero){
-        for(Conta elemento : contas){
+        for(Conta& elemento : contas){
             if(elemento.getNumero() == _numero){
                 if(elemento.getSaldo() > 0){
                    return -3; // Só pode encerrar com saldo zerado
@@ -167,14 +160,35 @@ class Cliente{
     }
     bool depositar(int conta, float valor){
         for(Conta& elemento: contas){
-            if((elemento.getNumero()) == (conta && valor > 0)){
+            if((elemento.getNumero() == conta) && (valor > 0)){
                 elemento.setSaldo(valor);
                 elemento.setExtrato(valor,1);
                 return true;
-
             }
         }
         return false;
+    }
+    string extrato(int conta){
+        stringstream ss;
+        for(Conta elemento: contas){
+            if(elemento.getNumero() == conta){
+                ss << elemento.getExtrato() << endl;
+                return ss.str();
+            }
+        }
+        ss << "Conta não encontrada" << endl;
+        return ss.str();
+    }
+    string extratoN(int conta, int n){
+        stringstream ss;
+        for(Conta elemento: contas){
+            if(elemento.getNumero() == conta){
+                ss << elemento.getExtratoN(n);
+                return ss.str();
+            }
+        }
+        ss << "Conta não encontrada" << endl;
+        return ss.str();
     }
 };
 
@@ -306,6 +320,7 @@ int main(){
                  << "sacar $conta $valor" << endl
                  << "depositar $conta $valor" << endl
                  << "saldo $conta" << endl
+                 << "extrato $conta" << endl
                  << "show" << endl
 
 
@@ -317,10 +332,11 @@ int main(){
             string _cpf;
             cin >> _cpf;
             cliente = agen.Login(_cpf);
-            if(cliente == nullptr)
+            if(cliente == nullptr){
                 cout << "Erro de login" << endl;
-            else
+            }else{
                 cout << "Sucesso" << endl;
+            }
         }
         if(op == "logout"){
             if(cliente != nullptr){
@@ -384,12 +400,12 @@ int main(){
                 cin >> aux2;
                 aux = cliente->sacar(aux1, aux2);
                 if(aux == true){
-                    cout << "Saque realizado com sucesso" << endl;
+                    cout << "Saque realizado com sucesso." << endl;
                 }else if(aux == false){
                     cout << "Saque não realizado. Conta/Valor inválido." << endl;
                 }
             }else{
-                cout << "Cliente não logado" << endl;
+                cout << "Erro Saque - Cliente não logado." << endl;
             }
         }
         if(op == "saldo"){
@@ -397,7 +413,7 @@ int main(){
                cout << cliente->getSaldo(read<int>()) << endl;
 
             }else{
-                cout << "cliente não logado" << endl;
+                cout << "Erro Saldo - Cliente não logado." << endl;
             }
         }
         if(op == "depositar"){
@@ -409,15 +425,38 @@ int main(){
                 cin >> aux2;
                 aux = cliente->depositar(aux1, aux2);
                 if(aux == true){
-                    cout << "Deposito realizado com sucesso" << endl;
+                    cout << "Deposito realizado com sucesso." << endl;
                 }else if(aux == false){
                     cout << "Deposito não realizado. Conta/Valor inválido." << endl;
                 }
             }else{
-                cout << "Cliente não logado" << endl;
+                cout << "Erro deposito - Cliente não logado." << endl;
             }
 
 
+        }
+        if(op == "extrato"){
+            if(cliente != nullptr){
+                string ss;
+                ss = cliente->extrato(read<int>());
+                cout << "Extrato:" << endl;
+                cout << ss;
+            }else{
+                cout << "Erro extrato - Cliente não logado." << endl;
+            }
+        }
+        if(op == "extratoN"){
+            if(cliente != nullptr){
+                string ss;
+                int conta;
+                int n;
+                cin >> conta >> n;
+                ss = cliente->extratoN(conta,n);
+                cout << "Extrato:" << endl;
+                cout << ss;
+            }else{
+                cout << "Erro extratoN - Cliente não logado." << endl;
+            }
         }
 
     }
