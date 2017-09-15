@@ -71,7 +71,7 @@ public:
 
     string getExtrato(){
         stringstream ss;
-        for (Operacao vetor : extrato){
+        for(Operacao vetor : extrato){
             ss << vetor.descricao << vetor.valor << endl;
         }
         return ss.str();
@@ -204,49 +204,63 @@ class Cliente{
         return ss.str();
     }
 
-// transf $contaDe $contaPara $valor
-    bool tranferencia(int _minha, int _outra, float _valor){
-        stringstream ss;
-        int cont = 0, cont2 = 0, aux = 0;
-        for(Conta elemento : contas){
-            cout << elemento.getNumero() << endl;
-        }
-        for(Conta elemento : contas){
-            if(elemento.getNumero() == _minha){
-                cont += 1;
+    vector<int> numeroContas(){
+        vector<int> aux;
+            for(Conta elemento : contas){
+                aux.push_back(elemento.getNumero());
             }
-            if(elemento.getNumero() == _outra){
-                cont2 += 1;
-            }
-        }
-        if((cont == 0) || (cont2 == 0)){
-            return false;
-        }
-        for(Conta& elemento : contas){
-            if(elemento.getNumero() == _minha){
-                if(_valor > elemento.getSaldo()){
-                    return false;
-                }else{
-                    float x = 0;
-                    x -= _valor;
-                    aux += 1;
-                    elemento.setSaldo(x);
-                    ss << "Transferencia para a conta " << _outra << " no valor em reais de ";
-                    elemento.extratoTransf(ss.str(), _valor);
-                }
-            }
-            if(aux > 0){
-                for(Conta& elemento2 : contas){
-                    if(elemento2.getNumero() == _outra){
-                        elemento2.setSaldo(_valor);
-                        aux = 0;
-                    }
-                }
+        return aux;
+    }
 
-            }
+    void cliTransf(int conta, float _valor){
+        for(Conta elemento : contas){
+
         }
-            return true;
-        }
+    }
+
+// transf $contaDe $contaPara $valor
+//    bool tranferencia(int _minha, int _outra, float _valor){
+//        stringstream ss;
+//        int cont = 0, cont2 = 0, aux = 0;
+//        for(Conta elemento : contas){
+//            cout << elemento.getNumero() << endl;
+//        }
+//        for(Conta elemento : contas){
+//            if(elemento.getNumero() == _minha){
+//                cont += 1;
+//            }
+//            if(elemento.getNumero() == _outra){
+//                cont2 += 1;
+//            }
+//        }
+//        if((cont == 0) || (cont2 == 0)){
+//            return false;
+//        }
+//        for(Conta& elemento : contas){
+//            if(elemento.getNumero() == _minha){
+//                if(_valor > elemento.getSaldo()){
+//                    return false;
+//                }else{
+//                    float x = 0;
+//                    x -= _valor;
+//                    aux += 1;
+//                    elemento.setSaldo(x);
+//                    ss << "Transferencia para a conta " << _outra << " no valor em reais de ";
+//                    elemento.extratoTransf(ss.str(), _valor);
+//                }
+//            }
+//            if(aux > 0){
+//                for(Conta& elemento2 : contas){
+//                    if(elemento2.getNumero() == _outra){
+//                        elemento2.setSaldo(_valor);
+//                        aux = 0;
+//                    }
+//                }
+
+//            }
+//        }
+//            return true;
+//        }
 
 };
 
@@ -348,6 +362,64 @@ class Agencia{
             }
         return "Error!";
         }
+
+    bool tranferencia(int _minha, int _outra, float _valor){
+        stringstream ss;
+        vector<int> nContas;
+        int cont = 0, cont2 = 0;
+        for(Cliente elemento : clientes){
+            vector<Conta> contaAux = elemento.getConta();
+            for(Conta elemento2 : contaAux){
+                nContas.push_back(elemento2.getNumero());
+            }
+        }
+        for(int i = 0; i < (int) nContas.size(); i++){
+            if(nContas[i] == _minha){
+                cont += 1;
+            }
+            if(nContas[i] == _outra){
+                cont2 += 1;
+            }
+        }
+        if((cont == 0) || (cont2 == 0)){
+            return false;
+        }
+        vector<string> cpfs;
+        for(Cliente elemento : clientes){
+            vector<Conta> contas = elemento.getConta();
+            for(Conta elemento2 : contas){
+                if(elemento2.getNumero() == _minha){
+                    cpfs.push_back(elemento.getCpf());
+                }
+                if(elemento2.getNumero() == _outra){
+                    cpfs.push_back(elemento.getCpf());
+                }
+            }
+        }
+        for(Cliente& elemento : clientes){
+            if(elemento.getCpf() == cpfs[0]){
+                vector<Conta> contas = elemento.getConta();
+                for(Conta& elemento2 : contas){
+                    if(elemento2.getNumero() == _minha){
+                        if(_valor > elemento2.getSaldo()){
+                            return false;
+                        }
+                        elemento2.setSaldo((-1)* _valor);
+                        elemento.cliTransf(_minha, _outra, _valor);
+
+                    }
+                }
+            }
+            if(elemento.getCpf() == cpfs[1]){
+                vector<Conta> contas = elemento.getConta();
+                for(Conta& elemento2 : contas){
+                    if(elemento2.getNumero() == _outra)
+                        elemento2.setSaldo(_valor);
+                }
+            }
+        }
+
+    }
 };
 
 void inicializar(Agencia& agencia){
@@ -521,7 +593,7 @@ int main(){
             int _s = read<int>();
             int _s2 = read<int>();
             float _valor = read<float>();
-            bool result = cliente->tranferencia(_s, _s2, _valor);
+            bool result = agen.tranferencia(_s, _s2, _valor);
             if(!result){
                 cout << "ERRO - Contas invalidas ou saldo insuficiente!" << endl;
             }else{
