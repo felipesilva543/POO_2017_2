@@ -7,12 +7,8 @@
 //    >> extrato $conta - OK
 //    >> extratoN $conta $qtd - OK
 
-// Ordenar vetor de clientes
 // Mudar Status das contas quando encerrar - OK
-
-
-
-
+// Ordenar vetor de clientes
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -42,7 +38,7 @@ struct Operacao{
 class Conta{
 private:
     int num;
-    float saldo{10};
+    float saldo{0};
     bool ativa{true};
     vector<Operacao> extrato;
 public:
@@ -70,6 +66,10 @@ public:
         return true;
     }
 
+    void extratoTransf(string ss, float _valor){
+        this->extrato.push_back(Operacao(ss, _valor));
+    }
+
     string getExtrato(){
         stringstream ss;
         for (Operacao vetor : extrato){
@@ -94,12 +94,6 @@ public:
     bool getAtiva(){
         return this->ativa;
     }
-
-//    bool tranferencia(Conta _outra, float _valor){
-//        this->saldo -= _valor;
-//    }
-
-
 };
 
 class Cliente{
@@ -138,58 +132,124 @@ class Cliente{
     }
     bool sacar(int conta, float valor){
         for(Conta& elemento: contas){
-            if((elemento.getNumero() == conta) && (elemento.getSaldo() >= valor) && (valor > 0)){
-                elemento.setSaldo(((-1)*valor));
-                elemento.setExtrato(valor,0);
-                return true;
-
-            }
+                if((elemento.getNumero() == conta) && (elemento.getSaldo() >= valor) && (valor > 0)){
+                    if(elemento.getAtiva()){
+                        elemento.setSaldo(((-1)*valor));
+                        elemento.setExtrato(valor,0);
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
         }
         return false;
     }
     string getSaldo(int conta){
         stringstream ss;
         for(Conta elemento: contas){
-            if(elemento.getNumero() ==  conta){
-                ss << elemento.getSaldo();
-                return ss.str();
-            }
+                 if(elemento.getNumero() ==  conta){
+                     if(elemento.getAtiva()){
+                        ss <<"Saldo: " << elemento.getSaldo();
+                        return ss.str();
+                     }else{
+                        return "Conta DESATIVADA.";
+                     }
+                }
         }
         ss << "Conta inválida";
         return ss.str();
     }
     bool depositar(int conta, float valor){
         for(Conta& elemento: contas){
-            if((elemento.getNumero() == conta) && (valor > 0)){
-                elemento.setSaldo(valor);
-                elemento.setExtrato(valor,1);
-                return true;
+                if((elemento.getNumero() == conta) && (valor > 0)){
+                    if(elemento.getAtiva()){
+                        elemento.setSaldo(valor);
+                        elemento.setExtrato(valor,1);
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
             }
-        }
         return false;
     }
     string extrato(int conta){
         stringstream ss;
         for(Conta elemento: contas){
             if(elemento.getNumero() == conta){
-                ss << elemento.getExtrato() << endl;
-                return ss.str();
+                if(elemento.getAtiva()){
+                    ss << "Extrato:\n" << elemento.getExtrato() << endl;
+                    return ss.str();
+                }else{
+                    return "Conta DESATIVADA.\n";
+                }
             }
         }
-        ss << "Conta não encontrada" << endl;
+        ss << "Conta não encontrada." << endl;
         return ss.str();
     }
     string extratoN(int conta, int n){
         stringstream ss;
         for(Conta elemento: contas){
             if(elemento.getNumero() == conta){
-                ss << elemento.getExtratoN(n);
-                return ss.str();
+                if(elemento.getAtiva()){
+                    ss << "ExtratoN:\n" << elemento.getExtratoN(n);
+                    return ss.str();
+                }
+                else{
+                    return "Conta DESATIVADA.\n";
+                }
             }
         }
-        ss << "Conta não encontrada" << endl;
+        ss << "Conta não encontrada." << endl;
         return ss.str();
     }
+
+// transf $contaDe $contaPara $valor
+    bool tranferencia(int _minha, int _outra, float _valor){
+        stringstream ss;
+        int cont = 0, cont2 = 0;
+        for(Conta elemento : contas){
+            cout << elemento.getNumero() << endl;
+        }
+        for(Conta elemento : contas){
+            cout << "Primeiro for pra saber se as contas existem" << endl;
+            if(elemento.getNumero() == _minha){
+                cont += 1;
+                cout << "Conta 1 existe" << endl;
+            }
+            if(elemento.getNumero() == _outra){
+                cont2 += 1;
+                cout << "Conta 2 existe" << endl;
+            }
+        }
+        if((cont == 0) || (cont2 == 0)){
+            return false;
+        }
+        for(Conta& elemento : contas){
+            cout << "Segundo for pra alterar os valores" << endl;
+            if(elemento.getNumero() == _minha){
+
+                if(_valor > elemento.getSaldo()){
+                    cout << "Saldo insuficiente" << endl;
+                    return false;
+                }else{
+                    float x = 0;
+                    x -= _valor;
+                    elemento.setSaldo(x);
+                    cout << "Minha conta!!, alterei o saldo" << endl;
+                    ss << "Transferencia de " << _minha << " para " << _outra;
+                    elemento.extratoTransf(ss.str(), _valor);
+                }
+            }
+            if(elemento.getNumero() == _outra){
+                elemento.setSaldo(_valor);
+                cout << "Segunda conta alterei o saldo!" << endl;
+            }
+        }
+            return true;
+        }
+
 };
 
 class Agencia{
@@ -198,8 +258,6 @@ class Agencia{
     Agencia(){}
 
     int abrirConta(string _cpf){
-
-        //Pra saber se tem duas contas ativas
         for(Cliente elemento : clientes){
             if(elemento.getConta().size() >= 2){
                 int x = 0;
@@ -297,6 +355,7 @@ void inicializar(Agencia& agencia){
     agencia.addCliente("321");
     agencia.addCliente("456");
     agencia.abrirConta("123");
+
 }
 
 
@@ -321,7 +380,9 @@ int main(){
                  << "depositar $conta $valor" << endl
                  << "saldo $conta" << endl
                  << "extrato $conta" << endl
+                 << "extratoN $conta $n" << endl
                  << "show" << endl
+                 << "transf $contaDe $contaPara $valor"
 
 
                  << "fim" << endl <<endl;
@@ -402,7 +463,7 @@ int main(){
                 if(aux == true){
                     cout << "Saque realizado com sucesso." << endl;
                 }else if(aux == false){
-                    cout << "Saque não realizado. Conta/Valor inválido." << endl;
+                    cout << "Saque não realizado. Conta/Valor inválido ou Conta DESATIVADA." << endl;
                 }
             }else{
                 cout << "Erro Saque - Cliente não logado." << endl;
@@ -427,7 +488,7 @@ int main(){
                 if(aux == true){
                     cout << "Deposito realizado com sucesso." << endl;
                 }else if(aux == false){
-                    cout << "Deposito não realizado. Conta/Valor inválido." << endl;
+                    cout << "Deposito não realizado. Conta/Valor inválido ou Conta DESATIVADA." << endl;
                 }
             }else{
                 cout << "Erro deposito - Cliente não logado." << endl;
@@ -439,7 +500,6 @@ int main(){
             if(cliente != nullptr){
                 string ss;
                 ss = cliente->extrato(read<int>());
-                cout << "Extrato:" << endl;
                 cout << ss;
             }else{
                 cout << "Erro extrato - Cliente não logado." << endl;
@@ -452,11 +512,22 @@ int main(){
                 int n;
                 cin >> conta >> n;
                 ss = cliente->extratoN(conta,n);
-                cout << "Extrato:" << endl;
                 cout << ss;
             }else{
                 cout << "Erro extratoN - Cliente não logado." << endl;
             }
+        }
+        if(op == "transf"){
+            int _s = read<int>();
+            int _s2 = read<int>();
+            float _valor = read<float>();
+            bool result = cliente->tranferencia(_s, _s2, _valor);
+            if(!result){
+                cout << "ERRO - Contas invalidas ou saldo insuficiente!" << endl;
+            }else{
+                cout << "Transferencia efetuada." << endl;
+            }
+
         }
 
     }
