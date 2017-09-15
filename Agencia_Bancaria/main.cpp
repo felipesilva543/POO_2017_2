@@ -1,4 +1,4 @@
-// Transferencias
+// Transferencias - OK
 //Completar codigo de inicialização
 // Ajeitar as Operações
 //    >> saldo $conta - OK
@@ -65,8 +65,10 @@ public:
         return true;
     }
 
-    void extratoTransf(string ss, float _valor){
-        this->extrato.push_back(Operacao(ss, _valor));
+    void cliTransf(int _conta, float _valor, string dePara){
+        stringstream ss;
+        ss << "Transferencia " << dePara << _conta <<" no valor de ";
+        this->extrato.push_back(Operacao(ss.str(), _valor));
     }
 
     string getExtrato(){
@@ -107,7 +109,7 @@ class Cliente{
         return this->cpf;
     }
 
-    vector<Conta> getConta(){
+    vector<Conta> &getConta(){
         return this->contas;
     }
 
@@ -211,57 +213,6 @@ class Cliente{
             }
         return aux;
     }
-
-    void cliTransf(int conta, float _valor){
-        for(Conta elemento : contas){
-
-        }
-    }
-
-// transf $contaDe $contaPara $valor
-//    bool tranferencia(int _minha, int _outra, float _valor){
-//        stringstream ss;
-//        int cont = 0, cont2 = 0, aux = 0;
-//        for(Conta elemento : contas){
-//            cout << elemento.getNumero() << endl;
-//        }
-//        for(Conta elemento : contas){
-//            if(elemento.getNumero() == _minha){
-//                cont += 1;
-//            }
-//            if(elemento.getNumero() == _outra){
-//                cont2 += 1;
-//            }
-//        }
-//        if((cont == 0) || (cont2 == 0)){
-//            return false;
-//        }
-//        for(Conta& elemento : contas){
-//            if(elemento.getNumero() == _minha){
-//                if(_valor > elemento.getSaldo()){
-//                    return false;
-//                }else{
-//                    float x = 0;
-//                    x -= _valor;
-//                    aux += 1;
-//                    elemento.setSaldo(x);
-//                    ss << "Transferencia para a conta " << _outra << " no valor em reais de ";
-//                    elemento.extratoTransf(ss.str(), _valor);
-//                }
-//            }
-//            if(aux > 0){
-//                for(Conta& elemento2 : contas){
-//                    if(elemento2.getNumero() == _outra){
-//                        elemento2.setSaldo(_valor);
-//                        aux = 0;
-//                    }
-//                }
-
-//            }
-//        }
-//            return true;
-//        }
-
 };
 
 class Agencia{
@@ -364,15 +315,17 @@ class Agencia{
         }
 
     bool tranferencia(int _minha, int _outra, float _valor){
-        stringstream ss;
-        vector<int> nContas;
         int cont = 0, cont2 = 0;
+        //Pega todas as contas de todos os clientes - ESSE TA CERTO
+        vector<Conta> contaAux;
+        vector<int> nContas;
         for(Cliente elemento : clientes){
-            vector<Conta> contaAux = elemento.getConta();
+            contaAux = elemento.getConta();
             for(Conta elemento2 : contaAux){
                 nContas.push_back(elemento2.getNumero());
             }
         }
+        // Verificando se as contas existem - TA CERTO
         for(int i = 0; i < (int) nContas.size(); i++){
             if(nContas[i] == _minha){
                 cont += 1;
@@ -384,41 +337,49 @@ class Agencia{
         if((cont == 0) || (cont2 == 0)){
             return false;
         }
+        //Pegando os clientes das determinadas contas - TA PRESTANDO
         vector<string> cpfs;
         for(Cliente elemento : clientes){
             vector<Conta> contas = elemento.getConta();
             for(Conta elemento2 : contas){
                 if(elemento2.getNumero() == _minha){
+                    if(!elemento2.getAtiva()){
+                        return false;
+                    }
                     cpfs.push_back(elemento.getCpf());
                 }
                 if(elemento2.getNumero() == _outra){
+                    if(!elemento2.getAtiva()){
+                        return false;
+                    }
                     cpfs.push_back(elemento.getCpf());
                 }
             }
         }
+        // Fazendo a transferencia
         for(Cliente& elemento : clientes){
             if(elemento.getCpf() == cpfs[0]){
-                vector<Conta> contas = elemento.getConta();
-                for(Conta& elemento2 : contas){
+                for(Conta& elemento2 : elemento.getConta()){
                     if(elemento2.getNumero() == _minha){
                         if(_valor > elemento2.getSaldo()){
                             return false;
                         }
                         elemento2.setSaldo((-1)* _valor);
-                        elemento.cliTransf(_minha, _outra, _valor);
-
+                        elemento2.cliTransf(_outra, _valor, "para ");
                     }
                 }
             }
             if(elemento.getCpf() == cpfs[1]){
-                vector<Conta> contas = elemento.getConta();
-                for(Conta& elemento2 : contas){
-                    if(elemento2.getNumero() == _outra)
+                for(Conta& elemento2 : elemento.getConta()){
+                    if(elemento2.getNumero() == _outra){
                         elemento2.setSaldo(_valor);
+                        elemento2.cliTransf(_minha, _valor, "de ");
+                    }
                 }
+
             }
         }
-
+        return true;
     }
 };
 
@@ -427,7 +388,6 @@ void inicializar(Agencia& agencia){
     agencia.addCliente("321");
     agencia.addCliente("456");
     agencia.abrirConta("123");
-
 }
 
 
@@ -454,9 +414,7 @@ int main(){
                  << "extrato $conta" << endl
                  << "extratoN $conta $n" << endl
                  << "show" << endl
-                 << "transf $contaDe $contaPara $valor"
-
-
+                 << "transf $contaDe $contaPara $valor" << endl
                  << "fim" << endl <<endl;
 
         }
@@ -590,16 +548,19 @@ int main(){
             }
         }
         if(op == "transf"){
-            int _s = read<int>();
-            int _s2 = read<int>();
-            float _valor = read<float>();
-            bool result = agen.tranferencia(_s, _s2, _valor);
-            if(!result){
-                cout << "ERRO - Contas invalidas ou saldo insuficiente!" << endl;
+            if(cliente == nullptr){
+                cout << "Error ao transferir - Cliente não logado" << endl;
             }else{
-                cout << "Transferencia efetuada." << endl;
+                int _minha = read<int>();
+                int _outra = read<int>();
+                float _valor = read<float>();
+                bool result = agen.tranferencia(_minha, _outra, _valor);
+                if(!result){
+                    cout << "ERRO - Contas invalidas/saldo insuficiente ou contas DESATIVADAS!" << endl;
+                }else{
+                    cout << "Transferencia efetuada." << endl;
+                }
             }
-
         }
 
     }
