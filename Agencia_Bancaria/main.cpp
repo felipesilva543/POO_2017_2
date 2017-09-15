@@ -1,13 +1,3 @@
-// Transferencias - OK
-//Completar codigo de inicialização
-// Ajeitar as Operações
-//    >> saldo $conta - OK
-//    >> saque $conta $valor - OK
-//    >> deposito $conta $valor - OK
-//    >> extrato $conta - OK
-//    >> extratoN $conta $qtd - OK
-
-// Mudar Status das contas quando encerrar - OK
 // Ordenar vetor de clientes
 #include <iostream>
 #include <vector>
@@ -215,6 +205,10 @@ class Cliente{
     }
 };
 
+bool comparaCli(Cliente a, Cliente b){
+    return a.getCpf() < b.getCpf();
+}
+
 class Agencia{
     vector<Cliente> clientes;
   public:
@@ -264,6 +258,7 @@ class Agencia{
         stringstream ss;
         int x = 1;
         vector<Conta> contas;
+        std::sort(clientes.begin(), clientes.end(), comparaCli);
         for(Cliente elemento : clientes){
             contas = elemento.getConta();
             vector<int> contasAti;
@@ -272,7 +267,7 @@ class Agencia{
                     contasAti.push_back(elemento2.getNumero());
                 }
             }
-            ss << x << " - " << elemento.getCpf() << " [ ";
+            ss << x << " - " << "CPF: " << elemento.getCpf() << " | Contas:" << " [ ";
             for(int i = 0; i < (int)contasAti.size(); i++){
                 ss << contasAti[i] << " ";
             }
