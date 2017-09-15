@@ -28,7 +28,6 @@ T read(){
 struct Operacao{
     string descricao;
     float valor;
-    float saldoParcial{0};
     Operacao(string descricao = "", float valor = 0){
         this->descricao = descricao;
         this->valor = valor;
@@ -38,7 +37,7 @@ struct Operacao{
 class Conta{
 private:
     int num;
-    float saldo{0};
+    float saldo{10};
     bool ativa{true};
     vector<Operacao> extrato;
 public:
@@ -208,43 +207,42 @@ class Cliente{
 // transf $contaDe $contaPara $valor
     bool tranferencia(int _minha, int _outra, float _valor){
         stringstream ss;
-        int cont = 0, cont2 = 0;
+        int cont = 0, cont2 = 0, aux = 0;
         for(Conta elemento : contas){
             cout << elemento.getNumero() << endl;
         }
         for(Conta elemento : contas){
-            cout << "Primeiro for pra saber se as contas existem" << endl;
             if(elemento.getNumero() == _minha){
                 cont += 1;
-                cout << "Conta 1 existe" << endl;
             }
             if(elemento.getNumero() == _outra){
                 cont2 += 1;
-                cout << "Conta 2 existe" << endl;
             }
         }
         if((cont == 0) || (cont2 == 0)){
             return false;
         }
         for(Conta& elemento : contas){
-            cout << "Segundo for pra alterar os valores" << endl;
             if(elemento.getNumero() == _minha){
-
                 if(_valor > elemento.getSaldo()){
-                    cout << "Saldo insuficiente" << endl;
                     return false;
                 }else{
                     float x = 0;
                     x -= _valor;
+                    aux += 1;
                     elemento.setSaldo(x);
-                    cout << "Minha conta!!, alterei o saldo" << endl;
-                    ss << "Transferencia de " << _minha << " para " << _outra;
+                    ss << "Transferencia para a conta " << _outra << " no valor em reais de ";
                     elemento.extratoTransf(ss.str(), _valor);
                 }
             }
-            if(elemento.getNumero() == _outra){
-                elemento.setSaldo(_valor);
-                cout << "Segunda conta alterei o saldo!" << endl;
+            if(aux > 0){
+                for(Conta& elemento2 : contas){
+                    if(elemento2.getNumero() == _outra){
+                        elemento2.setSaldo(_valor);
+                        aux = 0;
+                    }
+                }
+
             }
         }
             return true;
@@ -259,14 +257,16 @@ class Agencia{
 
     int abrirConta(string _cpf){
         for(Cliente elemento : clientes){
-            if(elemento.getConta().size() >= 2){
-                int x = 0;
-                vector<Conta> contas = elemento.getConta();
-                for(Conta elemento2 : contas){
-                    if(elemento2.getAtiva() == true){
-                        x += 1;
-                        if(x == 2){
-                            return -2;
+            if(elemento.getCpf() == _cpf){
+                if(elemento.getConta().size() >= 2){
+                    int x = 0;
+                    vector<Conta> contas = elemento.getConta();
+                    for(Conta elemento2 : contas){
+                        if(elemento2.getAtiva() == true){
+                            x += 1;
+                            if(x == 2){
+                                return -2;
+                            }
                         }
                     }
                 }
