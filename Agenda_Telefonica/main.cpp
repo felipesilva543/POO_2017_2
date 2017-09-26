@@ -1,8 +1,27 @@
 // O que FALTA!!
 
 // O numero só pode conter apenas digitos
-// Passar por referencia na hora de desfavoritar
-// Att fav quando add um novo numero
+// Desfavoritar - OK
+// Att fav quando add um novo numero - OK
+// Ajeitar o de procurar por pattern
+
+
+/*
+ *
+    bool verificaNumeros(string num){
+        int i = 0;
+        while(num[i] != '\0'){
+            if(num[i] < '0' || num[i] > '9')
+                return false;
+
+            i++;
+        }
+        return true;
+    }
+ *
+ */
+
+
 
 
 #include <iostream>
@@ -47,8 +66,8 @@ class Contato{
         return name;
     }
 
-    void setFavotiro(){
-        isFavorited = !isFavorited;
+    void setFavorito(bool _fav){
+        isFavorited = _fav;
     }
 
     bool getFavorito(){
@@ -115,7 +134,7 @@ class Agenda{
         return false;
     }
 
-    //FAzer para qualquer parte de uma string
+    //Fazer para qualquer parte de uma string
    string search(string _pattern){
        stringstream ss;
        for(Contato elemento : contatos){
@@ -141,7 +160,7 @@ class Agenda{
     bool favoritar(string _nome){
         for(Contato& elemento : contatos){
             if(elemento.getNome() == _nome){
-                elemento.setFavotiro();
+                elemento.setFavorito(true);
                 favoritos.push_back(elemento); // Se eu add um numero depois de add a pessoa a fav, n aparece no vetor de fav
                 return true;
             }
@@ -150,10 +169,13 @@ class Agenda{
     }
 
     bool desfavoritar(string _nome){
+        for(Contato& elemento : contatos){
+            if(elemento.getNome() == _nome){
+                elemento.setFavorito(false);
+            }
+        }
         for(int i = 0; i < (int) favoritos.size(); i++){
             if(favoritos[i].getNome() == _nome){
-                //passar por referencia pra dar certo mudar
-                favoritos[i].setFavotiro();
                 favoritos.erase(favoritos.begin() + i);
                 return true;
             }
@@ -206,6 +228,14 @@ class Agenda{
                     //Precisamos saber o que é esse numero invalido!!
                 }
                 elemento.addFone(Fone(_foneId, _number));
+                if(elemento.getFavorito()){
+                    for(int i = 0; i < (int) favoritos.size(); i++){
+                        if(favoritos[i].getNome() == _nome){
+                            favoritos.erase(favoritos.begin() + i);
+                            favoritos.push_back(elemento);
+                        }
+                    }
+                }
                 return 1;
             }
         }
@@ -240,6 +270,8 @@ void inicializar(Agenda& _agenda){
     _agenda.addFone("Iago", "fixo", "3343");
     _agenda.addFone("Iury", "recado", "6789");
     _agenda.addFone("Rafa", "casa", "9876");
+    _agenda.addFone("Rafa", "oi", "9872");
+    _agenda.addFone("Rafa", "tim", "9871");
 }
 
 void commandLine(Agenda& _agenda){
