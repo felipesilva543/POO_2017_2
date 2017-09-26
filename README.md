@@ -18,7 +18,8 @@ Desenvolvedores:
 3. Conta Bancaria
 4. JunkFood
 5. Agiota
-6. Agencia Bancaria 
+6. Agencia Bancaria
+7. Agenda Telefônica
 
 Informações dos Trabalhos disponível em < https://github.com/qxcodepoo/exercicios >
 
