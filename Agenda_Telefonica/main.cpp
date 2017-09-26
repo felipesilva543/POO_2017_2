@@ -1,32 +1,7 @@
-// O que FALTA!!
-
-// O numero só pode conter apenas digitos
-// Desfavoritar - OK
-// Att fav quando add um novo numero - OK
-// Ajeitar o de procurar por pattern
-
-
-/*
- *
-    bool verificaNumeros(string num){
-        int i = 0;
-        while(num[i] != '\0'){
-            if(num[i] < '0' || num[i] > '9')
-                return false;
-
-            i++;
-        }
-        return true;
-    }
- *
- */
-
-
-
-
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <string>
 #include <algorithm>
 using namespace std;
 
@@ -52,6 +27,7 @@ struct Fone{
         return number;
     }
 };
+
 
 class Contato{
     string name;
@@ -97,8 +73,11 @@ class Contato{
 
     bool match(string _pattern){
         for(Fone elemento : fones){
-            if((_pattern == elemento.getFoneId()) || (_pattern == elemento.getNumber()))
+            if(elemento.getFoneId().find(_pattern) != std::string::npos){
                 return true;
+            }else if(elemento.getNumber().find(_pattern) != std::string::npos){
+                return true;
+            }
         }
         return false;
     }
@@ -128,6 +107,11 @@ class Agenda{
         for(int i = 0; i < (int) contatos.size(); i++){
             if(_nome == contatos[i].getNome()){
                 contatos.erase(contatos.begin() + i);
+                for(int j = 0; j < (int) favoritos.size(); j++){
+                    if(_nome == favoritos[j].getNome()){
+                        favoritos.erase(favoritos.begin() + j);
+                    }
+                }
                 return true;
             }
         }
@@ -139,7 +123,7 @@ class Agenda{
        stringstream ss;
        for(Contato elemento : contatos){
            vector<Fone> fones = elemento.getFones();
-           if(elemento.getNome() == _pattern){
+           if((elemento.getNome().find(_pattern)) != std::string::npos){
                ss << "- " << elemento.getNome() << " ";
                for(Fone elemento2 : fones){
                    ss << "[" << elemento2.foneId << " " << elemento2.getNumber() << "] ";
@@ -161,7 +145,7 @@ class Agenda{
         for(Contato& elemento : contatos){
             if(elemento.getNome() == _nome){
                 elemento.setFavorito(true);
-                favoritos.push_back(elemento); // Se eu add um numero depois de add a pessoa a fav, n aparece no vetor de fav
+                favoritos.push_back(elemento);
                 return true;
             }
         }
@@ -225,7 +209,13 @@ class Agenda{
                     if(elemento2.getFoneId() == _foneId){
                         return -1;
                     }
-                    //Precisamos saber o que é esse numero invalido!!
+                    int i = 0;
+                    while(_number[i] != '\0'){
+                        if((_number[i] < '0') || (_number[i] > '9')){
+                            return -2;
+                        }
+                        i += 1;
+                    }
                 }
                 elemento.addFone(Fone(_foneId, _number));
                 if(elemento.getFavorito()){
@@ -283,7 +273,7 @@ void commandLine(Agenda& _agenda){
         cin >> op;
         if(op == "help"){
             cout << "addContato $name" << endl
-                 << "rmContato" << endl
+                 << "rmContato $name" << endl
                  << "showC" << endl
                  << "addFone $nome $foneid $number" << endl
                  << "rmFone $nome $foneid" << endl
@@ -300,7 +290,7 @@ void commandLine(Agenda& _agenda){
             if(_agenda.addContato(Contato(nome))){
                 cout << "Contato Adicionado!" << endl;
             }else{
-                cout << "Contato ja existe!" << endl;
+                cout << "Contato já existe!" << endl;
             }
         }
 
@@ -324,9 +314,11 @@ void commandLine(Agenda& _agenda){
             if(s == -1){
                 cout << "FoneId já existe!" << endl;
             }else if(s == -2){
-                cout << "Número invalido!" << endl;
+                cout << "Número inválido!" << endl;
             }else if(s == 1){
                 cout << "Número adicionado!" << endl;
+            }else if(s == -3){
+                cout << "Contato não encontrado!" << endl;
             }
         }
 
