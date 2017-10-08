@@ -3,5 +3,11 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    vagao.cpp \
+    passageiro.cpp
+
+HEADERS += \
+    vagao.h \
+    passageiro.h
 
