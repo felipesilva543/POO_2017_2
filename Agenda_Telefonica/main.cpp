@@ -209,13 +209,11 @@ class Agenda{
                     if(elemento2.getFoneId() == _foneId){
                         return -1;
                     }
-                    int i = 0;
-                    while(_number[i] != '\0'){
-                        if((_number[i] < '0') || (_number[i] > '9')){
+
+                    string data = "1234567890()- ";
+                    for(auto c : _number)
+                        if(data.find(c) == string::npos)
                             return -2;
-                        }
-                        i += 1;
-                    }
                 }
                 elemento.addFone(Fone(_foneId, _number));
                 if(elemento.getFavorito()){
