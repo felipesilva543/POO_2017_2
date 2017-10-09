@@ -5,9 +5,13 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     vagao.cpp \
-    passageiro.cpp
+    passageiro.cpp \
+    trem.cpp \
+    registropassageiros.cpp
 
 HEADERS += \
     vagao.h \
-    passageiro.h
+    passageiro.h \
+    trem.h \
+    registropassageiros.h
 

@@ -10,7 +10,7 @@ public:
     Passageiro(string _cpf){
         cpf = _cpf;
     }
-    string gorCPF(){
+    string getCPF(){
         return cpf;
     }
 

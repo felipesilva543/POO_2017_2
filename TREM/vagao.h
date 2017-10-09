@@ -2,6 +2,8 @@
 #define VAGAO_H
 #include <vector>
 #include <iostream>
+#include <sstream>
+
 #include "passageiro.h"
 
 using namespace std;
@@ -29,9 +31,9 @@ public:
         return cont;
     }
 
-
-
-
+    int getCapacidade(){
+        return capacidade;
+    }
 
     bool embarcar(Passageiro* _passageiro){
         for(Passageiro* &pass : cadeiras){
@@ -42,7 +44,26 @@ public:
         }
         return false;
     }
+    Passageiro* desembarcar(string _cpf){
+        for(int i = 0; i < capacidade; i++){
+            if(cadeiras[i].getCPF() == _cpf){
+                Passageiro* j = cadeiras[i];
+                cadeiras[i] = nullptr;
+                return &j;
+            }
+        }
+        return nullptr;
+    }
 
+    string toString(){
+        stringstream ss;
+        ss << "Id: " << id << endl;
+        ss << "Capacidade: " << capacidade << endl;
+        for(Passageiro pass : cadeiras){
+            ss << "  --> CPF: " << pass.getCPF() << endl;
+        }
+        return ss.str();
+    }
 
 
 };
