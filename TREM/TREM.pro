@@ -7,11 +7,14 @@ SOURCES += main.cpp \
     vagao.cpp \
     passageiro.cpp \
     trem.cpp \
-    registropassageiros.cpp
+    registropassageiros.cpp \
+    controller.cpp
 
 HEADERS += \
     vagao.h \
     passageiro.h \
     trem.h \
-    registropassageiros.h
+    registropassageiros.h \
+    split.h \
+    controller.h
 

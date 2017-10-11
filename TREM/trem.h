@@ -1,5 +1,6 @@
 #ifndef TREM_H
 #define TREM_H
+#include "registropassageiros.h"
 #include "vagao.h"
 #include <vector>
 #include <iostream>
@@ -9,29 +10,40 @@
 using namespace std;
 
 class Trem{
-    int maxVagoes{0};
+    int maxVagoes;
     int contarVagoes{0};
     vector<Vagao> vagoes;
 public:
-    Trem(int _maxVagoes){
+    Trem(int _maxVagoes = 0){
         maxVagoes = _maxVagoes;
     }
 
-    bool addVagao(Vagao _vagao){
+    void addVagao(Vagao _vagao){
         if(contarVagoes > maxVagoes){
-            return false;
+            throw string("Numero máximo de vagões atingido.");
         }
         vagoes.push_back(_vagao);
         contarVagoes++;
-        return true;
     }
 
-    bool embarcar(){
-
+    void embarcarTrem(Passageiro pass){
+        for(Vagao& vagao : vagoes){
+            if(vagao.getLotacao() < vagao.getCapacidade()){
+                if(vagao.embarcarVagao(&pass))
+                    return;
+            }
+        }
+        throw string("Poltronas indisponiveis.");
     }
 
-    Passageiro desembarcar(){
-
+    Passageiro * desembarcarTrem(string cpf){
+        for(Vagao vagao : vagoes){
+            Passageiro * ps = vagao.desembarcarVagao(cpf);
+            if(ps){
+                return ps;
+            }
+        }
+        return nullptr;
     }
 
     //Search

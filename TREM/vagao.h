@@ -9,13 +9,13 @@
 using namespace std;
 
 class Vagao{
-    string id;
+    int id;
     int capacidade;
     vector<Passageiro*> cadeiras;
 
 public:
-    Vagao(string _id = "", int _capacidade):
-        passageiros(_capacidade, nullptr)
+    Vagao(int _id = 0, int _capacidade = 0):
+        cadeiras(_capacidade, nullptr)
     {
         capacidade = _capacidade;
         id = _id;
@@ -23,7 +23,7 @@ public:
 
     int getLotacao(){
         int cont = 0;
-        for(Passageiro pass : cadeiras){
+        for(Passageiro * pass : cadeiras){
             if(pass){
                 cont++;
             }
@@ -35,21 +35,21 @@ public:
         return capacidade;
     }
 
-    bool embarcar(Passageiro* _passageiro){
+    bool embarcarVagao(Passageiro* _passageiro){
         for(Passageiro* &pass : cadeiras){
             if(pass == nullptr){
-                pass = passageiro;
+                pass = _passageiro;
                 return true;
             }
         }
         return false;
     }
-    Passageiro* desembarcar(string _cpf){
+    Passageiro* desembarcarVagao(string _cpf){
         for(int i = 0; i < capacidade; i++){
-            if(cadeiras[i].getCPF() == _cpf){
+            if(cadeiras[i]->getCPF() == _cpf){
                 Passageiro* j = cadeiras[i];
                 cadeiras[i] = nullptr;
-                return &j;
+                return j;
             }
         }
         return nullptr;
@@ -57,11 +57,15 @@ public:
 
     string toString(){
         stringstream ss;
-        ss << "Id: " << id << endl;
+        ss << "Vagão: " << id << endl;
         ss << "Capacidade: " << capacidade << endl;
-        for(Passageiro pass : cadeiras){
-            ss << "  --> CPF: " << pass.getCPF() << endl;
+        ss << "[---------------]";
+        for(int i = 0; i < capacidade; i++){
+            if(cadeiras[i] != nullptr){
+                ss << "  --> CPF: " << cadeiras[i]->getCPF() << endl;
+            }
         }
+        ss << "[---------------]";
         return ss.str();
     }
 

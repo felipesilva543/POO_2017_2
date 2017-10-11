@@ -13,7 +13,10 @@ class RegistroPassageiros{
 public:
     RegistroPassageiros(){}
 
-    bool addPass(Passageiro pass){
+    void addPass(Passageiro pass){
+        for(auto pessoa : passageiros)
+            if(pessoa.getCPF() == pass.getCPF())
+                throw string("Passageiro" + pass.getCPF() + " ja está embarcado.");
         passageiros.push_back(pass);
     }
 
