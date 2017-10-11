@@ -237,6 +237,14 @@ class Agenda{
                 for(Fone& elemento2 : fones){
                     if(elemento2.getFoneId() == _foneId){
                         elemento.rmFone(_foneId);
+                        ///////////////////////////////////////
+                        for(int j = 0; j < (int) favoritos.size(); j++){
+                            if(_nome == favoritos[j].getNome()){
+                                favoritos.erase(favoritos.begin() + j);
+                            }
+                        }
+                        favoritos.push_back(elemento);
+                        ///////////////////////////////////////
                         return 1;
                     }
                 }
