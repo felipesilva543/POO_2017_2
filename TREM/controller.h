@@ -7,6 +7,8 @@
 #include "trem.h"
 #include "split.h"
 #include "vagao.h"
+#include "passageiro.h"
+#include "registropassageiros.h"
 
 using namespace std;
 
@@ -37,9 +39,7 @@ public:
         if(cmd == "iniciarTrem"){
             int numVag = Int(ui[1]);
             trem = Trem(numVag);
-            string resp = "Trem iniciado com ";
-                   resp += numVag;
-                   resp += " vagões.\n";
+            string resp = "Trem iniciado com " + ui[1] + " vagões.\n";
             return resp;
         }
         if("addVagao" == cmd){

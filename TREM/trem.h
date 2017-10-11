@@ -1,6 +1,6 @@
 #ifndef TREM_H
 #define TREM_H
-#include "registropassageiros.h"
+#include "passageiro.h"
 #include "vagao.h"
 #include <vector>
 #include <iostream>
