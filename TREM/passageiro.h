@@ -7,7 +7,7 @@ using namespace std;
 class Passageiro{
     string cpf;
 public:
-    Passageiro(string _cpf){
+    Passageiro(string _cpf = ""){
         cpf = _cpf;
     }
     string getCPF(){
