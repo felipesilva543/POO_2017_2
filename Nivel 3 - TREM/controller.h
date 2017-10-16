@@ -12,6 +12,16 @@
 
 using namespace std;
 
+void inicializar(Trem &trem){
+    trem = Trem(2);
+    trem.addVagao(Vagao(0, 2));
+    trem.addVagao(Vagao(1, 2));
+    trem.embarcarTrem(new Passageiro("123"));
+    trem.embarcarTrem(new Passageiro("321"));
+    trem.embarcarTrem(new Passageiro("789"));
+    trem.embarcarTrem(new Passageiro("987"));
+}
+
 class Controller{
     Trem trem;
     RegistroPassageiros registro;
@@ -31,6 +41,7 @@ public:
                     "  desembarque _passCpf                       \n"
                     "  show                                       \n"
                     "  registro                                   \n"
+                    "  getEspacoLivre                             \n"
 
                     "  # default                                  \n"
                     "  fim                                        \n"
@@ -41,7 +52,13 @@ public:
             trem = Trem(numVag);
             string resp = "Trem iniciado com " + ui[1] + " vagões.\n";
             return resp;
+//            trem = Trem(2);
+//            inicializar(trem);
         }
+        if(cmd == "getEspacoLivre"){
+            cout << "Espaço livre: " << trem.getCapacidade() - trem.getLotacao();
+        }
+
         if("addVagao" == cmd){
             int capac = Int(ui[1]);
             Vagao vag = Vagao(id, capac);
@@ -50,24 +67,24 @@ public:
             return "Vagao adicionado.\n";
         }
         if(cmd == "embarcar"){
-            Passageiro aux = Passageiro(ui[1]);
-            vector<Passageiro> passageiro = registro.getAllPass();
-                for(auto pass : passageiro)
-                    if(pass.getCPF() == aux.getCPF())
-                        throw string("CPF já embarcado.");
+            Passageiro* aux = new Passageiro(ui[1]);
+                if(!trem.verifPassTrem(aux)){
+                    throw string("CPF já embarcado.");
+                }
             trem.embarcarTrem(aux);
-            registro.addPass(aux);
-            return "Passageiro embarcado com sucesso.";
+            registro.addPass(*aux);
+            return "Passageiro " + aux->getCPF() + " embarcado com sucesso.";
         }
         if(cmd == "desembarque"){
             Passageiro * pass = trem.desembarcarTrem(ui[1]);
-            if(pass == nullptr){
-                return "O passageiro não esta no trem. \n";
-            }
-            return "Passageiro desembarcado";
+//            if(pass == nullptr){
+//                return "O passageiro não esta no trem. \n";
+//            }
+            delete pass;
+            return "Passageiro " + ui[1] + " desembarcado";
         }
         if(cmd == "show"){
-            return trem.toString();
+            return trem.toStringTrem();
         }
         if(cmd == "registro"){
             return registro.toString();

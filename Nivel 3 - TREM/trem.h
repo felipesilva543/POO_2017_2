@@ -19,17 +19,17 @@ public:
     }
 
     void addVagao(Vagao _vagao){
-        if(contarVagoes > maxVagoes){
+        if(contarVagoes >= maxVagoes){
             throw string("Numero máximo de vagões atingido.");
         }
         vagoes.push_back(_vagao);
         contarVagoes++;
     }
 
-    void embarcarTrem(Passageiro pass){
+    void embarcarTrem(Passageiro* pass){
         for(Vagao& vagao : vagoes){
             if(vagao.getLotacao() < vagao.getCapacidade()){
-                if(vagao.embarcarVagao(&pass))
+                if(vagao.embarcarVagao(pass))
                     return;
             }
         }
@@ -37,13 +37,13 @@ public:
     }
 
     Passageiro * desembarcarTrem(string cpf){
-        for(Vagao vagao : vagoes){
+        for(Vagao& vagao : vagoes){
             Passageiro * ps = vagao.desembarcarVagao(cpf);
-            if(ps){
+            if(ps != nullptr){
                 return ps;
             }
         }
-        return nullptr;
+        throw string("Passageiro " + cpf + " não está no trem.");
     }
 
     //Search
@@ -64,13 +64,22 @@ public:
         return i;
     }
 
-    string toString(){
+    string toStringTrem(){
         stringstream ss;
         ss << "Max. de vagões: " << maxVagoes << endl;
         for(Vagao vag : vagoes){
-            ss << vag.toString() << endl;
+            ss << vag.toStringVagao() << endl;
         }
         return ss.str();
+    }
+
+    bool verifPassTrem(Passageiro* _passageiro){
+        for(auto vag : vagoes){
+            if(!vag.verfPassVagao(_passageiro)){
+                return false;
+            }
+        }
+        return true;
     }
 
 };

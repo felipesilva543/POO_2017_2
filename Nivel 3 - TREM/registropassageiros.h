@@ -3,9 +3,14 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "passageiro.h"
 
 using namespace std;
+
+bool CompPass(Passageiro a, Passageiro b){
+    return a.getCPF() < b.getCPF();
+}
 
 class RegistroPassageiros{
     vector<Passageiro> passageiros;
@@ -14,9 +19,6 @@ public:
     RegistroPassageiros(){}
 
     void addPass(Passageiro pass){
-        for(auto pessoa : passageiros)
-            if(pessoa.getCPF() == pass.getCPF())
-                throw string("Passageiro" + pass.getCPF() + " ja está embarcado.");
         passageiros.push_back(pass);
     }
 
@@ -25,10 +27,11 @@ public:
     }
 
     string toString(){
+        sort(passageiros.begin(), passageiros.end(), CompPass);
         stringstream ss;
-        ss << "Passageiros:" << endl;
+        ss << "Passageiros de passageiros:" << endl;
         for(Passageiro pass : passageiros){
-            ss << pass.toString() << endl;
+            ss << " --> " << pass.toStringPass() << endl;
         }
         return ss.str();
     }

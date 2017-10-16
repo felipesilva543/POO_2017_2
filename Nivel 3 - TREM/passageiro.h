@@ -14,9 +14,9 @@ public:
         return cpf;
     }
 
-    string toString(){
+    string toStringPass(){
         stringstream ss;
-        ss << "CPF: " << cpf << endl;
+        ss << "CPF: " << cpf;
         return ss.str();
     }
 };

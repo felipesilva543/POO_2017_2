@@ -35,7 +35,7 @@ public:
     }
 
     bool embarcarVagao(Passageiro* _passageiro){
-        for(Passageiro* &pass : cadeiras){
+        for(auto &pass : cadeiras){
             if(pass == nullptr){
                 pass = _passageiro;
                 return true;
@@ -44,8 +44,17 @@ public:
         return false;
     }
     Passageiro* desembarcarVagao(string _cpf){
+//        for(auto pass : cadeiras){
+//            if((pass != nullptr) && (pass->getCPF() == _cpf)){
+//                cout << "Estou no desembarque" << endl;
+//                Passageiro* aux = pass;
+//                pass = nullptr;
+//                return aux;
+//            }
+//        }
+
         for(int i = 0; i < capacidade; i++){
-            if(cadeiras[i]->getCPF() == _cpf){
+            if((cadeiras[i] != nullptr) && (cadeiras[i]->getCPF() == _cpf)){
                 Passageiro* j = cadeiras[i];
                 cadeiras[i] = nullptr;
                 return j;
@@ -54,18 +63,31 @@ public:
         return nullptr;
     }
 
-    string toString(){
+    string toStringVagao(){
         stringstream ss;
         ss << "Vagão: " << id << endl;
         ss << "Capacidade: " << capacidade << endl;
-        ss << "[---------------]";
-        for(int i = 0; i < capacidade; i++){
-            if(cadeiras[i] != nullptr){
-                ss << "  --> CPF: " << cadeiras[i]->getCPF() << endl;
+        ss << "[";
+        for(auto pass : cadeiras){
+            (pass != nullptr) ? ss << " " << pass->toStringPass() : ss << " - ";
+            }
+//        for(int i = 0; i < capacidade; i++){
+//            cout << "Cheguei aqui!" << endl;
+//            if(cadeiras[i] != nullptr){
+//                ss << cadeiras[i]->toString() << endl;
+//            }
+//        }
+        ss << "]";
+        return ss.str();
+    }
+
+    bool verfPassVagao(Passageiro* _passageiro){
+        for(auto pass : cadeiras){
+            if((pass != nullptr) && (pass->getCPF() == _passageiro->getCPF())){
+                return false;
             }
         }
-        ss << "[---------------]";
-        return ss.str();
+        return true;
     }
 
 
