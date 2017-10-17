@@ -44,15 +44,6 @@ public:
         return false;
     }
     Passageiro* desembarcarVagao(string _cpf){
-//        for(auto pass : cadeiras){
-//            if((pass != nullptr) && (pass->getCPF() == _cpf)){
-//                cout << "Estou no desembarque" << endl;
-//                Passageiro* aux = pass;
-//                pass = nullptr;
-//                return aux;
-//            }
-//        }
-
         for(int i = 0; i < capacidade; i++){
             if((cadeiras[i] != nullptr) && (cadeiras[i]->getCPF() == _cpf)){
                 Passageiro* j = cadeiras[i];
@@ -71,12 +62,6 @@ public:
         for(auto pass : cadeiras){
             (pass != nullptr) ? ss << " " << pass->toStringPass() : ss << " - ";
             }
-//        for(int i = 0; i < capacidade; i++){
-//            cout << "Cheguei aqui!" << endl;
-//            if(cadeiras[i] != nullptr){
-//                ss << cadeiras[i]->toString() << endl;
-//            }
-//        }
         ss << "]";
         return ss.str();
     }

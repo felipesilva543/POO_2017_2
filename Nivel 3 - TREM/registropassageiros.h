@@ -29,7 +29,7 @@ public:
     string toString(){
         sort(passageiros.begin(), passageiros.end(), CompPass);
         stringstream ss;
-        ss << "Passageiros de passageiros:" << endl;
+        ss << "Registro de passageiros:" << endl;
         for(Passageiro pass : passageiros){
             ss << " --> " << pass.toStringPass() << endl;
         }

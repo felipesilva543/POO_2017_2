@@ -77,9 +77,6 @@ public:
         }
         if(cmd == "desembarque"){
             Passageiro * pass = trem.desembarcarTrem(ui[1]);
-//            if(pass == nullptr){
-//                return "O passageiro não esta no trem. \n";
-//            }
             delete pass;
             return "Passageiro " + ui[1] + " desembarcado";
         }
