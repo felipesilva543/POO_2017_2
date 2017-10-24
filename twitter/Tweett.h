@@ -7,9 +7,8 @@
 
 using namespace std;
 
-
 class Tweett{
-    int idTw;
+    string idTw;
     string userName;
     string msg;
     vector<User> likes;
@@ -21,25 +20,29 @@ public:
     }
 
     void addLike(User _user){
+        likes.push_back(_user);
+    }
 
+    string getTwId(){
+        return this->idTw;
     }
-    int getTwId(){
-        return idTw;
-    }
+
     string getUserName(){
-        return userName;
+        return this->userName;
     }
+
     string getMsg(){
-        return msg;
+        return this->msg;
     }
+
     string toString(){
         stringstream ss;
-        ss << "Id: " << idTw << endl;
-        ss << "User Name: " << userName << endl;
-        ss << "Msg: " << msg << endl;
+        ss << "Id: " << this->idTw << endl;
+        ss << "User Name: " << this->userName << endl;
+        ss << "Msg: " << this->msg << endl;
         ss << "{";
-        for(auto elemento : likes){
-            ss << elemento.toString() << ", ";
+        for(auto elemento : this->likes){
+            ss << elemento.getUserName() << " ";
         }
         ss << "}";
 
