@@ -1,5 +1,5 @@
-#ifndef TWEETT_H
-#define TWEETT_H
+#ifndef TWEET_H
+#define TWEET_H
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -7,20 +7,22 @@
 
 using namespace std;
 
-class Tweett{
+
+
+class Tweet{
     string idTw;
     string userName;
     string msg;
-    vector<User> likes;
+    vector<string> likes;
 public:
-    Tweett(int _idTw, string _userName, string _msg){
+    Tweet(int _idTw, string _userName, string _msg){
         this->idTw = _idTw;
         this->userName = _userName;
         this->msg = _msg;
     }
 
-    void addLike(User _user){
-        likes.push_back(_user);
+    void addLike(string _username){
+        likes.push_back(_username);
     }
 
     string getTwId(){
@@ -40,7 +42,7 @@ public:
         ss << "Id: " << this->idTw << endl;
         ss << "User Name: " << this->userName << endl;
         ss << "Msg: " << this->msg << endl;
-        ss << "{";
+        ss << "{ ";
         for(auto elemento : this->likes){
             ss << elemento.getUserName() << " ";
         }
@@ -50,4 +52,4 @@ public:
     }
 };
 
-#endif // TWEETT_H
+#endif // TWEET_H

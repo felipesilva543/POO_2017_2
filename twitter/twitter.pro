@@ -9,7 +9,7 @@ SOURCES += main.cpp \
     Repository.cpp
 
 HEADERS += \
-    Tweett.h \
     User.h \
     Repository.h \
-    split.h
+    split.h \
+    Tweet.h

@@ -1,20 +1,19 @@
 #ifndef USER_H
 #define USER_H
 #include "Repository.h"
-#include "Tweett.h"
 #include <iostream>
 #include <sstream>
-
+#include <vector>
 using namespace std;
 
-//class Tweett;
+class Tweet;
 
 class User{
     string username;
-    Repository<User> seguidores;
-    Repository<User> seguidos;
-    Repository<Tweett> myTweets;
-    Repository<Tweett> timeLine;
+    vector<User*> seguidores;
+    vector<User*> seguidos;
+    vector<Tweet> myTweets;
+    vector<Tweet*> timeLine;
     int unreadCount;
     int nextTwId;
 
@@ -24,7 +23,7 @@ public:
     }
 
     void seguir(User user){
-        seguidos.add(user.getUserName(), user);
+        seguidos.add(user.getUserName());
 
     }
 
@@ -33,9 +32,9 @@ public:
 
 //    }
 
-    vector<Tweett> getUnread(){
-        vector<Tweett> aux = timeLine.getValues();
-        vector<Tweett> aux2;
+    vector<Tweet> getUnread(){
+        vector<Tweet> aux = timeLine.getValues();
+        vector<Tweet> aux2;
         for(int i = ((int)aux.size() - unreadCount); i < ((int)aux.size()); i++){
             aux2.push_back(aux[i]);
         }
@@ -54,11 +53,11 @@ public:
         return this->seguidos.getValues();
     }
 
-    vector<Tweett> getMyTweets(){
+    vector<Tweet> getMyTweets(){
         return this->myTweets.getValues();
     }
 
-    Repository<Tweett> getTimeLine(){
+    vector<Tweet> getTimeLine(){
         return this->timeLine;
     }
 
@@ -81,8 +80,8 @@ public:
         ss << "}" << endl;
 
         ss << "Meus tweetts { ";
-        vector<Tweett> aux3 = myTweets.getValues();
-        for(Tweett elemento: aux3){
+        vector<Tweet> aux3 = myTweets.getValues();
+        for(Tweet elemento: aux3){
             ss << "ID: " << elemento.getTwId() << ": " << elemento.getMsg() << endl;
         }
         ss << "}";

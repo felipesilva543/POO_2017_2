@@ -25,6 +25,7 @@ public:
         return _mapa.count(key);
     }
 
+    //mudar para User
     void rm(string key){
         if(!_mapa.erase(key))
             throw nomeTipo + " " + key + " nao existe";
