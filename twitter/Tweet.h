@@ -3,19 +3,20 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <list>
 #include "User.h"
 
 using namespace std;
 
-
-
 class Tweet{
-    string idTw;
+    int idTw;
     string userName;
     string msg;
-    vector<string> likes;
+    list<string> likes;
+
 public:
-    Tweet(int _idTw, string _userName, string _msg){
+
+    Tweet(int _idTw = 0, string _userName = "", string _msg = ""){
         this->idTw = _idTw;
         this->userName = _userName;
         this->msg = _msg;
@@ -25,7 +26,7 @@ public:
         likes.push_back(_username);
     }
 
-    string getTwId(){
+    int getTwId(){
         return this->idTw;
     }
 
@@ -39,14 +40,16 @@ public:
 
     string toString(){
         stringstream ss;
-        ss << "Id: " << this->idTw << endl;
-        ss << "User Name: " << this->userName << endl;
-        ss << "Msg: " << this->msg << endl;
-        ss << "{ ";
-        for(auto elemento : this->likes){
-            ss << elemento.getUserName() << " ";
+        ss << "  " << this->idTw << " | "
+           << this->userName << " | "
+           << this->msg;
+        if((int) likes.size() > 0){
+            ss << "{ ";
+            for(auto elemento : this->likes){
+                ss << elemento << " ";
+            }
+            ss << "}";
         }
-        ss << "}";
 
         return ss.str();
     }

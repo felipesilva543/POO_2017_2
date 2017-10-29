@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <list>
 
 template <class T>
 T cast(std::string palavra){
@@ -37,6 +38,23 @@ std::string vet2str(std::string prefix, std::vector<T> vet, std::string separ){
     for(auto elem : vet)
         ss << elem.toString() << separ;
     return ss.str();
+}
+
+template<class T>
+std::string join(std::vector<T> vet, std::string separ){
+    std::stringstream ss;
+    for(unsigned int i = 0; i < vet.size() - 1 ; i++)
+        ss << vet[i] << separ;
+    if(vet.size() > 0)
+        ss  << vet.back();
+    return ss.str();
+
+}
+
+template<class T>
+std::string join(std::list<T> _list, std::string separ){
+    return join(std::vector<T>(_list.begin(), _list.end()), separ);
+
 }
 
 

@@ -4,87 +4,87 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <list>
 using namespace std;
 
 class Tweet;
 
 class User{
     string username;
-    vector<User*> seguidores;
-    vector<User*> seguidos;
-    vector<Tweet> myTweets;
-    vector<Tweet*> timeLine;
-    int unreadCount;
-    int nextTwId;
+    list<User*> seguidores;
+    list<User*> seguidos;
+    list<Tweet*> myTweets;
+    list<Tweet*> timeLine;
+    int unreadCount{0};
+    int nextTwId{0};
 
 public:
     User(string _username = ""){
         this->username = _username;
     }
-
-    void seguir(User user){
-        seguidos.add(user.getUserName());
-
-    }
-
-//    void twittar(string msg){
-//        myTweets.add();
-
-//    }
-
-    vector<Tweet> getUnread(){
-        vector<Tweet> aux = timeLine.getValues();
-        vector<Tweet> aux2;
-        for(int i = ((int)aux.size() - unreadCount); i < ((int)aux.size()); i++){
-            aux2.push_back(aux[i]);
-        }
-        return aux;
-    }
-
     string getUserName(){
         return this->username;
     }
 
-    vector<User> getSeguidores(){
-        return this->seguidores.getValues();
+    list<User*> getSeguidores(){
+        return this->seguidores;
     }
 
-    vector<User> getSeguidos(){
-        return this->seguidos.getValues();
+    list<User*> getSeguidos(){
+        return this->seguidos;
     }
 
-    vector<Tweet> getMyTweets(){
-        return this->myTweets.getValues();
+    list<Tweet*> getMyTweets(){
+        return this->myTweets;
     }
 
-    vector<Tweet> getTimeLine(){
+    list<Tweet*> getTimeLine(){
         return this->timeLine;
     }
 
-    string toStringUser(){
-        stringstream ss;
-        ss << "Nome: " << getUserName() << endl;
 
-        ss << "Seguidores: { ";
-        vector<User> aux = seguidores.getValues();
-        for(User elemento : aux){
-            ss << elemento.getUserName() << " ";
+    void seguir(User *other){
+        for(auto elem : seguidos){
+            if(elem->username == other->getUserName()) return;
         }
-        ss << "}" << endl;
 
-        ss << "Seguidos: { ";
-        vector<User> aux2 = seguidos.getValues();
-        for(User elemento: aux2){
-            ss << elemento.getUserName() << " ";
-        }
-        ss << "}" << endl;
+        seguidos.push_back(other);
+        other->addSeguidor(this);
+    }
 
-        ss << "Meus tweetts { ";
-        vector<Tweet> aux3 = myTweets.getValues();
-        for(Tweet elemento: aux3){
-            ss << "ID: " << elemento.getTwId() << ": " << elemento.getMsg() << endl;
+    void twittar(Tweet * tw){
+        myTweets.push_front(tw);
+        for(User * usr : seguidores){
+            usr->plusUnreadCount();
+            usr->timeLine.push_front(tw);
         }
-        ss << "}";
+
+    }
+
+    list<Tweet*> unread(){
+        cout << "Estou no getUnread!\n";
+        list<Tweet*> naoLidos;
+
+        int cont = 0;
+
+        for(auto itw = getTimeLine().begin(); cont < unreadCount; cont++){
+            cout << unreadCount << endl;
+            cout << cont << endl;
+            cout << cont << " n lido\n";
+            naoLidos.push_back(*itw);
+            itw++;
+        }
+
+        cout << "Peguei os Unread! \n";
+        unreadCount = 0;
+        return naoLidos;
+    }
+
+    void addSeguidor(User *value){
+        seguidores.push_back(value);
+    }
+    void plusUnreadCount(){
+        unreadCount += 1;
     }
 };
 

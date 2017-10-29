@@ -1,6 +1,7 @@
 #ifndef REPOSITORY_H
 #define REPOSITORY_H
 
+#include <vector>
 #include <iostream>
 #include <map>
 
@@ -25,7 +26,6 @@ public:
         return _mapa.count(key);
     }
 
-    //mudar para User
     void rm(string key){
         if(!_mapa.erase(key))
             throw nomeTipo + " " + key + " nao existe";

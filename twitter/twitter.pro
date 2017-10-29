@@ -6,10 +6,12 @@ CONFIG -= qt
 SOURCES += main.cpp \
     Tweett.cpp \
     User.cpp \
-    Repository.cpp
+    tweetgenerator.cpp
 
 HEADERS += \
     User.h \
     Repository.h \
     split.h \
-    Tweet.h
+    Tweet.h \
+    controller.h \
+    tweetgenerator.h

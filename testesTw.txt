@@ -1,0 +1,10 @@
+addUser Felipe
+addUser Assis
+seguir Assis Felipe
+seguir Felipe Assis
+seguidores Felipe
+seguindo Assis
+twittar Felipe Oi lindos
+twittar Assis Eai má!
+twittar Assis Tudo blz??
+
