@@ -20,7 +20,8 @@ Desenvolvedores:
 5. Agiota
 6. Agencia Bancaria
 7. Agenda Telefônica
-8. Trem
+8. Trem_v1
+9. Twitter
 
 Informações dos Trabalhos disponível em <https://qxcodepoo.github.io/>
 
