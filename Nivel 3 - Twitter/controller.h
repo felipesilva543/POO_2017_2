@@ -73,7 +73,7 @@ public:
             return ss.str();
         }
 
-        if(cmd == "seguindo"){
+        if(cmd == "seguidos"){
             list<User*> seguindo = r_user.at(ui[1]).getSeguidos();
             stringstream ss;
             ss << "Seguindo: " << endl << "[ ";
