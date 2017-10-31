@@ -4,7 +4,6 @@
 #include "split.h"
 #include "Tweet.h"
 #include "User.h"
-#include "tweetgenerator.h"
 #include <sstream>
 
 
@@ -44,13 +43,19 @@ public:
             r_user.add(ui[1], User(ui[1]));
             return "Usuário Criado!\n";
         }
+
         if(cmd == "users"){
             vector<User> vUser = r_user.getValues();
+            stringstream ss;
+            ss << "[ ";
             for(auto ele : vUser){
-                cout << ele.getUserName() << endl;
+                ss << ele.getUserName() << " ";
             }
-            return "";
+            ss << " ]";
+
+            return ss.str();
         }
+
         if(cmd == "seguir"){
             r_user.at(ui[1]).seguir(&r_user.at(ui[2]));
 
@@ -60,20 +65,22 @@ public:
         if(cmd == "seguidores"){
             list<User*> seguidores = r_user.at(ui[1]).getSeguidores();
             stringstream ss;
-            ss << "Seguidores: " << endl;
+            ss << "Seguidores: " << endl << "[ ";
             for(auto ele : seguidores){
-                ss << ele->getUserName() << endl;
+                ss << ele->getUserName() << " ";
             }
+            ss << " ]";
             return ss.str();
         }
 
         if(cmd == "seguindo"){
             list<User*> seguindo = r_user.at(ui[1]).getSeguidos();
             stringstream ss;
-            ss << "Seguindo: " << endl;
+            ss << "Seguindo: " << endl << "[ ";
             for(auto ele : seguindo){
-                ss << ele->getUserName() << endl;
+                ss << ele->getUserName() << " ";
             }
+            ss << "]";
             return ss.str();
         }
 
@@ -96,7 +103,7 @@ public:
             stringstream ss;
             ss << "Timeline: " << ui[1] << endl;
             for(auto ele : timeline){
-                ss << ele->toString() << endl << endl;
+                ss << ele->toString() << endl;
             }
             return ss.str();
         }
@@ -116,24 +123,28 @@ public:
             return ss.str();
         }
 
-//        if(cmd ==  "unread"){
-//            cout << "Oi bb!\n";
-//            string nome = ui[1];
-//            list<Tweet*> nLidos = r_user.at(nome).unread();
-//            cout << "Oi bb2!\n";
-//            stringstream ss;
-//            ss << "Unreads: " << endl;
-//            for(auto ele : nLidos){
-//                cout << "Oi bb3!\n";
-//                ss << ele->toString() << endl;
-//            }
-//            return ss.str();
-//        }
+        if(cmd == "unread"){
+            int aux = r_user.at(ui[1]).getUnreadCount();
+            int i = 0;
+            list<Tweet*> naolidos = r_user.at(ui[1]).getTimeLine();
+            stringstream ss;
+            ss << "Nâo lidos: " << ui[1] << endl;
+            for(auto ele : naolidos){
+                if(i < aux){
+                    ss << ele->toString() << endl;
+                    i++;
+                }
+                else{
+                    r_user.at(ui[1]).setUnreadCount(0);
+                    return ss.str();
+                }
+            }
+            r_user.at(ui[1]).setUnreadCount(0);
+            return ss.str();
+        }
 
         return "";
     }
-
-
 
     void commandLine() {
         string line = "";

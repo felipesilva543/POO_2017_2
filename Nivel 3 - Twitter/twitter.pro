@@ -3,15 +3,11 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp \
-    Tweett.cpp \
-    User.cpp \
-    tweetgenerator.cpp
+SOURCES += main.cpp
 
 HEADERS += \
     User.h \
     Repository.h \
     split.h \
     Tweet.h \
-    controller.h \
-    tweetgenerator.h
+    controller.h

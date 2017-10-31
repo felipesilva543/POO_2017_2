@@ -39,6 +39,7 @@ public:
     }
 
     list<Tweet*> getTimeLine(){
+        setUnreadCount(0);
         return this->timeLine;
     }
 
@@ -85,6 +86,13 @@ public:
     }
     void plusUnreadCount(){
         unreadCount += 1;
+    }
+    int getUnreadCount() const
+    {
+        return unreadCount;
+    }
+    void setUnreadCount(int unread){
+        this->unreadCount = unread;
     }
 };
 

@@ -40,8 +40,8 @@ public:
 
     string toString(){
         stringstream ss;
-        ss << "  " << this->idTw << " | "
-           << this->userName << " | "
+        ss << "  " << this->idTw << " "
+           << this->userName << ": "
            << this->msg;
         if((int) likes.size() > 0){
             ss << "{ ";
