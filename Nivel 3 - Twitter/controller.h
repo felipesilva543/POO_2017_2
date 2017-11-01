@@ -6,7 +6,6 @@
 #include "User.h"
 #include <sstream>
 
-
 string HELP = R"(
 help
 users
@@ -24,11 +23,10 @@ unread     _nome
 class Controller{
     Repository<User> r_user;
     Repository<Tweet> r_tw;
-    //TweetGenerator twg;
     int nextId{0};
 public:
     Controller():
-    r_user(), r_tw()//, twg(&r_tw)
+    r_user(), r_tw()
     {
 
     }
