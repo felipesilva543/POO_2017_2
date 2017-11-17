@@ -1,8 +1,8 @@
 #ifndef REPOSITORY_H
 #define REPOSITORY_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <map>
 
 using namespace std;
@@ -16,33 +16,56 @@ public:
         this->nomeTipo = nomeTipo;
     }
 
-    void add(string key, T t){
+    //adiciona se a chave ainda nao existir
+    T * add(string key, T t){
         if(_mapa.count(key) == 1)
             throw nomeTipo + " " + key + " ja existe";
         _mapa[key] = t;
+        return &_mapa[key];
     }
 
-    bool exist(string key){
+    //retorna se o objeto está no repositório
+    bool has(string key){
         return _mapa.count(key);
     }
 
+    //retorna se conseguiu remover
     void rm(string key){
         if(!_mapa.erase(key))
             throw nomeTipo + " " + key + " nao existe";
     }
 
+    //retorna o endereço do objeto
+    T * get(string key){
+        if(_mapa.count(key) == 0)
+            throw nomeTipo + " " + key + " nao existe";
+        return &_mapa[key];
+    }
+
+    //retorna o endereço do objeto
     T& at(string key){
         if(_mapa.count(key) == 0)
             throw nomeTipo + " " + key + " nao existe";
         return _mapa[key];
     }
 
-    vector<T> getValues(){
-        vector<T> vet;
-        for(auto par : _mapa)
+    //retonar um vetor com a cópia dos elementos
+    vector<T> values(){
+        std::vector<T> vet;
+        for(auto& par : _mapa)
             vet.push_back(par.second);
         return vet;
     }
+
+    //retorna um vetor com a cópia das chaves
+    vector<string> keys(){
+        vector<string> vet;
+        for(auto& par : _mapa)
+            vet.push_back(par.first);
+        return vet;
+    }
+
 };
 
 #endif // REPOSITORY_H
+

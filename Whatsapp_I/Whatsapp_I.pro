@@ -6,5 +6,9 @@ CONFIG -= qt
 SOURCES += main.cpp
 
 HEADERS += \
-    repository.h
+    split.h \
+    poo_repository.h \
+    poo_controller.h \
+    poo_aux.h \
+    whatsapp.h
 
