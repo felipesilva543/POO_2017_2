@@ -86,12 +86,10 @@ class Chat{
     string chatId;
     vector<Zap> lista_zap;
     map<string, Registro> lista_reg;
+    //string systemUserName{"System"};
 public:
     Chat(string _chatId = ""){
         chatId = _chatId;
-    }
-    void setEnableInOutMsgs(bool valor){
-        this->enableInOutMsgs = valor;
     }
 
     vector<string> getUsers(){
