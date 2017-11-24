@@ -86,8 +86,6 @@ class Chat{
     string chatId;
     vector<Zap> lista_zap;
     map<string, Registro> lista_reg;
-    static bool enableInOutMsgs;
-    //static string systemUsername = "system";
 public:
     Chat(string _chatId = ""){
         chatId = _chatId;
@@ -107,9 +105,7 @@ public:
         if(((int) lista_reg.size()) != 0)
             throw "Erro ao adicionar o primeiro Usuário.\n";
 
-        //Adicione o usuario
         lista_reg[_chatCreator->userId] = Registro(_chatCreator);
-        //Se adicione a lista de grupos do usuario
         _chatCreator->lista_chat[this->chatId] = this;
         return true;
     }
@@ -136,10 +132,6 @@ public:
         }
     }
 
-    /**
-     *def getUnreadCount(userId):
-    # retorne a quantidade de mensagens nao lidas desse user
-     */
     int getUnreadCount(string _userId){
         assertUser(_userId);
         Registro aux = lista_reg[_userId];
@@ -202,42 +194,25 @@ void User::invite(string _chatId, User *_user){
     assertChat(_chatId);
     Chat * aux = lista_chat[_chatId];
     bool t = aux->hasUser(_user->userId);
-    //se o usuario ja esta no chat, retorne
     if(t)
         return;
-    //Abra um registro para esse usuario no chat
-    aux->lista_reg[_user->userId] = Registro(_user);
-    //Adicione esse chat na lista dos usuarios
-    _user->lista_chat[_chatId] = aux;
 
-    //            # se as mensagens de InOut estiverem habilitadas
-    //                # envie uma mensagem avisando que o novo usuario chegou
+    aux->lista_reg[_user->userId] = Registro(_user);
+    _user->lista_chat[_chatId] = aux;
 }
 
 void User::leave(string _chatId){
-    //Teste se voce tem esse chat - OK
     assertChat(_chatId);
     Chat * aux = lista_chat[_chatId];
-    //Se retire da lista do chat
     aux->lista_reg.erase(this->userId);
-    //Retire o chat da sua lista
     lista_chat.erase(aux->chatId);
-
-
-    //Se habilitado, mande mensagem avisando que voce saiu
 }
 
 void User::sendZap(string _msg, string _chatId){
-    //Teste se voce tem esse chat
     assertChat(_chatId);
-    //Obtenha o objeto chat
     Chat * aux = lista_chat[_chatId];
-    //Delegue para o chat entregar o objeto Zap que voce criou
     Zap msg = Zap(this->userId, _msg);
     aux->deliverZap(msg);
 }
-
-
-
 
 #endif // WHATSAPP
