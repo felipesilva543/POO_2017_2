@@ -12,25 +12,32 @@ string HELP = R"(
         help
         addIngred       _id _valor
         showIngred
-        infoIngred
-        addProd         _id _ingre ... _ingre _valor
+        infoIngred      _id
+        addProd         _id _ingre ... _ingre _custoProd
         showProd
-        infoProd
+        infoProd        _id
         addCliente      _name ... _name
         showClientes
         infoCliente     _name
         addMesa         _id _qtdCad
+        showMesas
+        infoMesa        _id
+        sentar          _cli _mesa
+        comprar         _mesa _produto
+        pagar           _cliente
 )";
 
 class Restaurante : public Controller{
     Repository<Ingrediente> r_ingre;
     Repository<Produto> r_produtos;
     Repository<Cliente> r_clientes;
+    Repository<Mesa> r_mesas;
 public:
     Restaurante():
         r_ingre("ingredientes"),
         r_produtos("produtos"),
-        r_clientes("clientes")
+        r_clientes("clientes"),
+        r_mesas("mesas")
     {}
 
     string process(string line){
@@ -46,13 +53,7 @@ public:
             return "" + r_ingre.keys();
         }
         else if(cmd == "infoIngred"){
-            vector<Ingrediente> aux = r_ingre.values();
-            stringstream ss;
-            ss << "Ingredientes: \n";
-            for(auto ele : aux){
-                ss << ele.toStringIngr();
-            }
-            return ss.str();
+            return r_ingre.get(ui[1])->toStringIngr();
         }
         else if(cmd == "addProd"){
             int size = ui.size();
@@ -67,12 +68,7 @@ public:
             return "" + r_produtos.keys();
         }
         else if(cmd == "infoProd"){
-            vector<Produto> prodAux = r_produtos.values();
-            stringstream ss;
-            for(auto ele : prodAux){
-                ss << ele.toStringProd();
-            }
-            return ss.str();
+            return r_produtos.get(ui[1])->toStringProd();
         }
         else if(cmd == "addCliente"){
             int size = ui.size();
@@ -85,17 +81,26 @@ public:
         }
         else if(cmd == "infoCliente"){
             return r_clientes.get(ui[1])->toStringCli();
-
-            vector<Cliente> prodCli = r_clientes.values();
-            stringstream ss;
-            for(auto ele : prodCli){
-                ss << ele.toStringCli() << endl;
-            }
-            return ss.str();
         }
         else if(cmd == "addMesa"){
-
+            r_mesas.add(ui[1],Mesa(ui[1], Int(ui[2])));
         }
+        else if(cmd == "showMesas"){
+            return "" + r_mesas.keys();
+        }
+        else if(cmd == "infoMesa"){
+            return r_mesas.get(ui[1])->toStringMesa();
+        }
+        else if(cmd == "sentar"){
+            r_clientes.get(ui[1])->sentar(r_mesas.get(ui[2]));
+        }
+        else if(cmd == "comprar"){
+           r_mesas.get(ui[1])->comprar(r_produtos.get(ui[2]));
+        }
+        else if(cmd == "pagar"){
+            r_clientes.get(ui[1])->pagarESair();
+        }
+
 
         else if(cmd == "fim")
             return "";
