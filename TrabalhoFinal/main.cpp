@@ -109,8 +109,6 @@ public:
             return "" + r_clientes.get(ui[1])->pagarESair(r_mesas.get(ui[2]));
 
         }
-
-
         else if(cmd == "fim")
             return "";
         else

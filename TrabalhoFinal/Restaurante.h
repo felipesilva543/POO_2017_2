@@ -171,6 +171,10 @@ public:
 //        return saldoDev;
 //    }
     void sentar(Mesa * _mesa){
+        for(Mesa * ele : mesaCli){
+            if(ele->getIdMesa() == _mesa->getIdMesa())
+                throw string("\nCliente já está nessa mesa!\n");
+        }
         if(_mesa->addCli(this)){
             mesaCli.push_back(_mesa);
         }else{
@@ -179,10 +183,10 @@ public:
     }
 
     string pagarESair(Mesa * idMesa){
-        Mesa* mesa = nullptr;
+        Mesa * mesa = nullptr;
         stringstream ss;
         float valorTotal = 0;
-        for(Mesa* element: mesaCli){
+        for(Mesa * element: mesaCli){
             if(element->getIdMesa() == idMesa->getIdMesa()){
                 mesa = element;
             }
@@ -191,20 +195,24 @@ public:
             throw string("Cliente não está nessa mesa!\n");
 
         for(int i = 0; i < (int) mesa->contas.size(); i++){
+            cout << "i: " << i << endl;
             if(mesa->contas[i].userIdCli() == this->getIdCliente()){
                 vector<Venda> vendasAux = mesa->contas[i].getVendas();
                 ss << "Compras Realizadas:" << endl;
-                for(Venda ele : vendasAux){
-                    float aPagar = (ele.getProdVen()->getValor()/ele.getDivd());
-                    ss << "1/" << ele.getDivd() << " " << ele.getProdVen()->getIdProd() <<
-                          " = " << aPagar << endl;
-                    valorTotal += aPagar;
-                    mesa->setValorAPagar(aPagar);
+                if(((int) vendasAux.size()) != 0){
+                    for(Venda ele : vendasAux){
+                        cout << "For do vetor de vendas do cliente!" << endl;
+                        float aPagar = (ele.getProdVen()->getValor()/ele.getDivd());
+                        ss << "1/" << ele.getDivd() << " " << ele.getProdVen()->getIdProd() <<
+                              " = " << aPagar << endl;
+                        valorTotal += aPagar;
+                        mesa->setValorAPagar(aPagar);
+                    }
                 }
-                ss << "Total: " << valorTotal;
                 mesa->contas.erase(mesa->contas.begin() + i);
+                ss << "Total: " << valorTotal;
                 for(int j = 0; j < (int) mesaCli.size(); j++){
-                    if(mesaCli[i]->getIdMesa() == mesa->getIdMesa()){
+                    if(mesaCli[j]->getIdMesa() == mesa->getIdMesa()){
                         mesaCli.erase(mesaCli.begin() + j);
                         return ss.str();
                     }
