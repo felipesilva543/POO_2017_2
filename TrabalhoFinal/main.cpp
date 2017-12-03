@@ -22,9 +22,9 @@ string HELP = R"(
         addMesa         _id _qtdCad
         showMesas
         infoMesa        _id
-        sentar          _cli _mesa
-        comprar         _mesa _produto
-        pagar           _cliente
+        sentar          _mesa _cli ... _cli
+        comprar         _mesa _produto _cli ... _cli
+        pagar           _cliente _mesa
 )";
 
 class Restaurante : public Controller{
@@ -92,13 +92,22 @@ public:
             return r_mesas.get(ui[1])->toStringMesa();
         }
         else if(cmd == "sentar"){
-            r_clientes.get(ui[1])->sentar(r_mesas.get(ui[2]));
+            int size = ui.size();
+            for(int i = 2; i < (size); i++){
+                r_clientes.get(ui[i])->sentar(r_mesas.get(ui[1]));
+            }
         }
-        else if(cmd == "comprar"){
-           r_mesas.get(ui[1])->comprar(r_produtos.get(ui[2]));
+        else if(cmd == "comprar"){// comprar         _mesa _produto _cli ... _cli
+            vector<Cliente*> clisAux;
+            int size = (int) ui.size();
+            for(int i = 3; i < (size); i++){
+                clisAux.push_back(r_clientes.get(ui[i]));
+            }
+            r_mesas.get(ui[1])->comprar(r_produtos.get(ui[2]), clisAux);
         }
         else if(cmd == "pagar"){
-            r_clientes.get(ui[1])->pagarESair();
+            return "" + r_clientes.get(ui[1])->pagarESair(r_mesas.get(ui[2]));
+
         }
 
 

@@ -1,6 +1,10 @@
 #ifndef RESTAURANTE_H
 #define RESTAURANTE_H
-
+/*
+ *Falta ver se ta comprando pagando, acho que só isso
+ *
+ *
+ */
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -73,13 +77,47 @@ public:
     }
 };
 
+class Venda{
+    Produto * prodVen;
+    float div;
+public:
+    Venda(Produto * _prod, float _div) {
+        prodVen = _prod;
+        div = _div;
+    }
+
+    Produto *getProdVen(){
+        return prodVen;
+    }
+    float getDivd(){
+        return div;
+    }
+};
+
 class Cliente;
+class UserConta{
+    Cliente * cliente;
+    vector<Venda> vendas;
+public:
+    UserConta(Cliente * cli){
+        cliente = cli;
+    }
+    vector<Venda> getVendas(){
+        return vendas;
+    }
+    void setVendas(Venda value){
+        vendas.push_back(value);
+    }
+    string userIdCli();
+};
+
 class Mesa{
     string idMesa;
     int clientesNaMesa{0};
     int qtdCad{0};
     float valorAPagar{0};
-    vector<Cliente*> cli_mesa;
+    vector<UserConta> contas;
+    //vector<Cliente*> cli_mesa;
 public:
     Mesa(string id = "", int _qtdCad = 0){
         idMesa = id;
@@ -94,16 +132,17 @@ public:
         return idMesa;
     }
 
-    void comprar(Produto * produto);
+    void comprar(Produto * produto, vector<Cliente*> clis);
 
     bool addCli(Cliente * cli){
-        if(((int)cli_mesa.size()) == qtdCad)
+        if(((int)contas.size()) == qtdCad)
             return false;
-        cli_mesa.push_back(cli);
+        contas.push_back(UserConta(cli));
         clientesNaMesa++;
         return true;
-
     }
+
+    float valordoCliente(Cliente * cli);
 
     void setValorAPagar(float valor){
         valorAPagar -= valor;
@@ -115,12 +154,10 @@ public:
     friend class Cliente;
 };
 
-
-
 class Cliente{
     string idCliente;
-    Mesa * mesa{nullptr};
-    float saldoDev{0};
+    vector<Mesa*> mesaCli;
+//    float saldoDev{0};
 public:
     Cliente(string id = ""){
         idCliente = id;
@@ -130,51 +167,92 @@ public:
         return idCliente;
     }
 
-    float getSaldoDev(){
-        return saldoDev;
-    }
-
+//    float getSaldoDev(){
+//        return saldoDev;
+//    }
     void sentar(Mesa * _mesa){
         if(_mesa->addCli(this)){
-            mesa = _mesa;
+            mesaCli.push_back(_mesa);
         }else{
             throw string("\nVagas indisponíveis para essa mesa!\n");
         }
     }
 
-    void pagarESair(){
-        for(int i = 0; i < (int) mesa->cli_mesa.size(); i++){
-            if(mesa->cli_mesa[i]->getIdCliente() == this->getIdCliente()){
-                mesa->setValorAPagar(saldoDev);
-                saldoDev = 0;
-                mesa->cli_mesa.erase(mesa->cli_mesa.begin() + i);
-                mesa = nullptr;
-                return;
+    string pagarESair(Mesa * idMesa){
+        Mesa* mesa = nullptr;
+        stringstream ss;
+        float valorTotal = 0;
+        for(Mesa* element: mesaCli){
+            if(element->getIdMesa() == idMesa->getIdMesa()){
+                mesa = element;
             }
         }
-    }
+        if(mesa == nullptr)
+            throw string("Cliente não está nessa mesa!\n");
 
-    string getMesaCli(){
-        return mesa->getIdMesa();
+        for(int i = 0; i < (int) mesa->contas.size(); i++){
+            if(mesa->contas[i].userIdCli() == this->getIdCliente()){
+                vector<Venda> vendasAux = mesa->contas[i].getVendas();
+                ss << "Compras Realizadas:" << endl;
+                for(Venda ele : vendasAux){
+                    float aPagar = (ele.getProdVen()->getValor()/ele.getDivd());
+                    ss << "1/" << ele.getDivd() << " " << ele.getProdVen()->getIdProd() <<
+                          " = " << aPagar << endl;
+                    valorTotal += aPagar;
+                    mesa->setValorAPagar(aPagar);
+                }
+                ss << "Total: " << valorTotal;
+                mesa->contas.erase(mesa->contas.begin() + i);
+                for(int j = 0; j < (int) mesaCli.size(); j++){
+                    if(mesaCli[i]->getIdMesa() == mesa->getIdMesa()){
+                        mesaCli.erase(mesaCli.begin() + j);
+                        return ss.str();
+                    }
+                }
+            }
+        }
+        return "";
     }
 
     string toStringCli(){
         stringstream ss;
-        ss << "Cliente: " << idCliente << " Dev: R$ " << saldoDev;
-        ss << "\nMesa: ";
-        if(mesa != nullptr)
-            ss << mesa->getIdMesa();
+        ss << "Cliente: " << idCliente;
+        ss << "\nMesa: " << endl;
+        for(Mesa* elemento: mesaCli)
+            if(elemento != nullptr){
+                ss << "[ ";
+                ss << elemento->getIdMesa() << " Dev: ";
+                ss << elemento->valordoCliente(this);
+                ss << "]" << endl;
+            }
         return ss.str();
 
     }
     friend class Mesa;
 };
 
-void Mesa::comprar(Produto *produto){
-    valorAPagar += produto->getValor();
-    for(Cliente * ele : cli_mesa){
-        ele->saldoDev += (produto->getValor() / clientesNaMesa);
+void Mesa::comprar(Produto *produto, vector<Cliente*> clis){
+    for(UserConta &ele : contas){
+        for(Cliente * ele2 : clis){
+            if(ele.userIdCli() == ele2->getIdCliente()){
+                ele.setVendas(Venda(produto, (int) clis.size()));
+            }
+        }
     }
+    valorAPagar += produto->getValor();
+}
+
+float Mesa::valordoCliente(Cliente *cli){
+    float valor = 0;
+    for(UserConta ele : contas){
+        if(ele.userIdCli() == cli->getIdCliente()){
+            vector<Venda> vendAux = ele.getVendas();
+            for(Venda ele2 : vendAux){
+                valor += (ele2.getProdVen()->getValor() / ele2.getDivd());
+            }
+        }
+    }
+    return valor;
 }
 
 string Mesa::toStringMesa(){
@@ -183,17 +261,29 @@ string Mesa::toStringMesa(){
     ss << "\nClientes na Mesa: " << endl;
 
     ss << "[ ";
-    for(Cliente* elemento : cli_mesa){
-        ss << elemento->getIdCliente() << " ";
+    for(UserConta ele : contas){
+        ss << ele.userIdCli() << " ";
     }
     ss << "]";
     ss << "\nValor total: R$ " << valorAPagar;
     return ss.str();
 }
 
-
+string UserConta::userIdCli(){
+    return cliente->getIdCliente();
+}
 
 #endif // RESTAURANTE_H
+
+
+
+
+
+
+
+
+
+
 
 
 
