@@ -1,10 +1,6 @@
 #ifndef RESTAURANTE_H
 #define RESTAURANTE_H
-/*
- *Falta ver se ta comprando pagando, acho que só isso
- *
- *
- */
+
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -12,7 +8,6 @@
 using namespace std;
 
 struct Ingrediente{
-    //int qtd
     string idIngr;
     float valor{0};
     Ingrediente(string id = "", float _valor = 0.0){
@@ -71,7 +66,7 @@ public:
          ss << "Produto: " << idProd << " R$: " << valor << endl;
          ss << "Ingredientes: " << endl;
          for(auto elemento : ingredientes){
-             ss << elemento->getIdIngr() << endl;
+             ss << ".. " << elemento->getIdIngr() << endl;
          }
          return ss.str();
     }
@@ -117,7 +112,7 @@ class Mesa{
     int qtdCad{0};
     float valorAPagar{0};
     vector<UserConta> contas;
-    //vector<Cliente*> cli_mesa;
+
 public:
     Mesa(string id = "", int _qtdCad = 0){
         idMesa = id;
@@ -157,7 +152,6 @@ public:
 class Cliente{
     string idCliente;
     vector<Mesa*> mesaCli;
-//    float saldoDev{0};
 public:
     Cliente(string id = ""){
         idCliente = id;
@@ -167,9 +161,6 @@ public:
         return idCliente;
     }
 
-//    float getSaldoDev(){
-//        return saldoDev;
-//    }
     void sentar(Mesa * _mesa){
         for(Mesa * ele : mesaCli){
             if(ele->getIdMesa() == _mesa->getIdMesa())
@@ -195,13 +186,11 @@ public:
             throw string("Cliente não está nessa mesa!\n");
 
         for(int i = 0; i < (int) mesa->contas.size(); i++){
-            cout << "i: " << i << endl;
             if(mesa->contas[i].userIdCli() == this->getIdCliente()){
                 vector<Venda> vendasAux = mesa->contas[i].getVendas();
                 ss << "Compras Realizadas:" << endl;
                 if(((int) vendasAux.size()) != 0){
                     for(Venda ele : vendasAux){
-                        cout << "For do vetor de vendas do cliente!" << endl;
                         float aPagar = (ele.getProdVen()->getValor()/ele.getDivd());
                         ss << "1/" << ele.getDivd() << " " << ele.getProdVen()->getIdProd() <<
                               " = " << aPagar << endl;

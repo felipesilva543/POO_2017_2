@@ -27,7 +27,7 @@ inline int Int(string word){
     return cast<int>(word);
 }
 
-inline int Float(string word){
+inline float Float(string word){
     return cast<float>(word);
 }
 
