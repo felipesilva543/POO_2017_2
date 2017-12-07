@@ -22,6 +22,7 @@ Desenvolvedores:
 7. Agenda Telefônica
 8. Trem_v1
 9. Twitter
+10. Whatsapp 1
+11. Restaurante (Trabalho Final)
 
 Informações dos Trabalhos disponível em <https://qxcodepoo.github.io/>
-
