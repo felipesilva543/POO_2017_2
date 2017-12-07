@@ -229,6 +229,20 @@ public:
 };
 
 void Mesa::comprar(Produto *produto, vector<Cliente*> clis){
+    int cont = 0, pessoa = -1;
+    for(int i = 0; i < (int) clis.size(); i++)
+        for(UserConta ele : contas){
+            if(clis[i]->getIdCliente() == ele.userIdCli())
+                cont++;
+            else {
+                pessoa = i;
+            }
+
+    }
+    if(cont != (int) clis.size())
+        throw "Cliente " + clis[pessoa]->getIdCliente() + " não está ná mesa!\n";
+
+
     for(UserConta &ele : contas){
         for(Cliente * ele2 : clis){
             if(ele.userIdCli() == ele2->getIdCliente()){
