@@ -271,18 +271,3 @@ string UserConta::userIdCli(){
 }
 
 #endif // RESTAURANTE_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
