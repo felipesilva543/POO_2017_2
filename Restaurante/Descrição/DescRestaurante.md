@@ -221,6 +221,7 @@ infoMesa 01
 - Você pode implementar um modo que os clientes vejam o que compraram  e quanto estão devendo antes de pagar.
 
 [Controller](https://github.com/felipesilva543/POO_2017_2/blob/master/Restaurante/Descri%C3%A7%C3%A3o/ControllerDescRest.md).
+
 [Guia](https://github.com/felipesilva543/POO_2017_2/blob/master/Restaurante/Descri%C3%A7%C3%A3o/GuiaDescRes.md).
 
 ## Diagrama de Classes
