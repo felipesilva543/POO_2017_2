@@ -212,7 +212,7 @@ infoMesa 01
 ```
 - Clientes podem sentar nas mesas a qualquer momento, sem alterar o valor da mesa ou dos demais clientes nelas, a menos que faça uma compra.
 
-[Controller](https://github.com/felipesilva543/POO_2017_2/blob/master/Restaurante/GuiaDescRest.md).
+[Controller](https://github.com/felipesilva543/POO_2017_2/blob/master/Restaurante/Descri%C3%A7%C3%A3o/ControllerDescRest.md).
 
 ## Diagrama de Classes
 
