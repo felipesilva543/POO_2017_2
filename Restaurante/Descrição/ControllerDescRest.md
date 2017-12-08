@@ -118,3 +118,5 @@ public:
     }
 };
 ```
+
+[Descrição](https://github.com/felipesilva543/POO_2017_2/blob/master/Restaurante/Descri%C3%A7%C3%A3o/DescRestaurante.md).
