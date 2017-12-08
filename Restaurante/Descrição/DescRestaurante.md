@@ -24,6 +24,9 @@ addIngred LeiteCondensado 2
 ..done
 addIngred Leite 2
 ..done
+addIngred Leite 2
+..ingrediente Leite ja existe
+
 showIngred
   ..[Achocolatado CocoRalado Leite LeiteComdensado]
 infoIngred Leite
@@ -42,6 +45,9 @@ addProd Brigadeiro LeiteCondensado Achocolatado CocoRalado 3
 ..done
 addProd Milkshake LeiteCondensado Leite Achocolatado 2
 ..done
+addProd Milkshake LeiteCondensado Leite Achocolatado 2
+..produto Milkshake ja existe
+
 showProd
   ..[Brigadeiro Milkshake]
 
@@ -58,7 +64,6 @@ infoProd Milkshake
   .... LeiteCondensado
   .... Leite
   .... Achocolatado
-
 ```
 - Os clientes podem ser adicionados ao sistema e devem ter id único.
 - O usuário pode querer saber quais os clientes cadastrados
@@ -68,8 +73,8 @@ addCliente Felipe Iury Iago Barbara Marcia Vitoria
 ..done
 showClientes
 ..[Barbara Felipe Iago Iury Marcia Vitoria]
-
-
+addCliente Felipe
+..clientes Felipe ja existe
 ```
 - Mesas podem ser adicionadas as restaurante e devem ter id únicos.
   - Informe a quantidade de cadeiras da mesa.
@@ -84,6 +89,8 @@ addMesa 02 4
 ..done
 showMesas
 ..[01 02]
+addMesa 01 4
+..mesas 01 ja existe
 
 infoMesa 01
 ..Mesa:01 QtdCade: 3
@@ -211,8 +218,10 @@ infoMesa 01
 
 ```
 - Clientes podem sentar nas mesas a qualquer momento, sem alterar o valor da mesa ou dos demais clientes nelas, a menos que faça uma compra.
+- Você pode implementar um modo que os clientes vejam o que compraram  e quanto estão devendo antes de pagar.
 
 [Controller](https://github.com/felipesilva543/POO_2017_2/blob/master/Restaurante/Descri%C3%A7%C3%A3o/ControllerDescRest.md).
+[Guia]().
 
 ## Diagrama de Classes
 
