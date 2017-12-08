@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>30</x>
+      <y>30</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Ingrediente
+--
+- idIngr: string
+- valor: float
+--
++ getIdIngr(): string 
++ getValor(): float
++ setValor(float newValor): void 
++ toStringIngr(): string 
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>470</x>
+      <y>180</y>
+      <w>360</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>Produto
+--
+- idProd: string
+- ingredientes: vector&lt;Ingrediente*&gt; 
+- valor: float 
+--
++ setIngredientes(Ingrediente *ingre): void
++ getValor(): float 
++ setValor(float newValor): void 
++ getIdProd(): string 
++ toStringProd(): string
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>30</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Venda
+--
+- prodVen: Produto *
+- div: float;
+--
++ Produto *getProdVen()
++ float getDivd()
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>30</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>UserConta
+--
+- cliente: Cliente * 
+- vendas: vector&lt;Venda&gt; 
+--
++ getVendas(): vector&lt;Venda&gt;
++ setVendas(Venda value): void 
++ userIdCli(): string
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>30</x>
+      <y>180</y>
+      <w>430</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>Mesa
+--
+- idMesa: string 
+- clientesNaMesa: int 
+- qtdCad: int
+- valorAPagar: float
+- contas: vector&lt;UserConta&gt;
+--
++ getClieNaMesa(): int
++ getIdMesa(): string
++ comprar(Produto * produto, vector&lt;Cliente*&gt; clis): void 
++ addCli(Cliente * cli): bool 
++ valordoCliente(Cliente * cli): float 
++ setValorAPagar(float valor): void 
++ toStringMesa(): string 
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>30</x>
+      <y>420</y>
+      <w>280</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Cliente
+--
+- idCliente: string 
+- mesaCli: vector&lt;Mesa*&gt;
+--
++ getIdCliente(): string 
++ sentar(Mesa * _mesa): void 
++ pagarESair(Mesa * idMesa): string 
++ toStringCli(): string
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
