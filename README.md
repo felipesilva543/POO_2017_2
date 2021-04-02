@@ -1,6 +1,6 @@
-# POO_2017_2
+# Programação Orientada a Objetos
 
-Arquivos da disciplina de Programação Orientada a Objetos
+Arquivos da disciplina de Programação Orientada a Objetos, 2017.2
 
 Desenvolvedores:
 
